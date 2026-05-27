@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://514d5c4txnc"]
+
+[ext_resource type="PackedScene" uid="uid://xc2j10gglrut" path="res://modelos/puerta/old_door.glb" id="1_bek8y"]
+[ext_resource type="Script" uid="uid://bamyi2y1v5gyi" path="res://script/puerta.gd" id="2_8gvf5"]
+[ext_resource type="Script" uid="uid://6orpsh6yjs35" path="res://script/areaPuerta3D.gd" id="3_1h0p7"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1h0p7"]
+
+[sub_resource type="Animation" id="Animation_ufeg8"]
+length = 0.001
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.70710677, 0, 0.70710677)
+
+[sub_resource type="Animation" id="Animation_24v0a"]
+resource_name = "puertaAbriendose"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.03333336, 1, 0, 0, 0, 1, 0.96666664, 1, 0, -0.70710677, 0, 0.70710677)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xb50p"]
+_data = {
+&"RESET": SubResource("Animation_ufeg8"),
+&"puertaAbriendose": SubResource("Animation_24v0a")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f0hns"]
+size = Vector3(2.036377, 4.0242615, 0.10095215)
+
+[sub_resource type="Animation" id="Animation_7qdvq"]
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.70710677, 0, 0.70710677, 0.96666664, 1, 0, -0.040131792, 0, 0.99919444)
+
+[sub_resource type="Animation" id="Animation_ixt30"]
+resource_name = "new_animation"
+tracks/0/type = "rotation_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.033333335, 1, 0, 0, 0, 1, 1, 1, 0, -0.70710677, 0, 0.70710677)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8ldge"]
+_data = {
+&"RESET": SubResource("Animation_7qdvq"),
+&"new_animation": SubResource("Animation_ixt30")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a4tkm"]
+size = Vector3(2.2231445, 1, 0.7778168)
+
+[node name="Node3D" type="Node3D" unique_id=122183140]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=249395057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0700684, 0, -1.5380859)
+size = Vector3(20, 0.5, 20)
+
+[node name="Puerta" parent="." unique_id=493133088 instance=ExtResource("1_bek8y")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.4263964, 0, 0.36008966)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Puerta/Sketchfab_model/Root" parent_id_path=PackedInt32Array(493133088, 1361416665) index="1" unique_id=1212999162]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2458236)
+shape = SubResource("BoxShape3D_1h0p7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Puerta" unique_id=1721577269]
+libraries/ = SubResource("AnimationLibrary_xb50p")
+
+[node name="pivotePuerta" type="Node3D" parent="." unique_id=1588630784]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -4.8333364, 0, 0)
+script = ExtResource("2_8gvf5")
+
+[node name="Sketchfab_Scene" parent="pivotePuerta" unique_id=1106575036 instance=ExtResource("1_bek8y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.84847975, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pivotePuerta/Sketchfab_Scene" unique_id=1219398421]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0059814453, 1.5121307, -0.040100098)
+shape = SubResource("BoxShape3D_f0hns")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="pivotePuerta" unique_id=470526608]
+root_node = NodePath("../Sketchfab_Scene")
+libraries/ = SubResource("AnimationLibrary_8ldge")
+
+[node name="Area3D" type="Area3D" parent="pivotePuerta" unique_id=644644885]
+script = ExtResource("3_1h0p7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="pivotePuerta/Area3D" unique_id=1870397920]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.96975374, 0.07224131, -0.038291454)
+shape = SubResource("BoxShape3D_a4tkm")
+
+[editable path="Puerta"]

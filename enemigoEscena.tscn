@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://cslir3tmthdtw"]
+
+[ext_resource type="Script" uid="uid://dqg8g28dccnpd" path="res://jugador.gd" id="1_d3jai"]
+[ext_resource type="AudioStream" uid="uid://d2tfaq3h2lypi" path="res://sonidos/detectarJugador.mp3" id="2_7xe8f"]
+[ext_resource type="Script" uid="uid://brwmxp60m2ng2" path="res://ancianoEnemy.gd" id="2_rqhm7"]
+[ext_resource type="AudioStream" uid="uid://df6yplih10qvl" path="res://sonidos/sonidoAmbiente.mp3" id="4_kb137"]
+[ext_resource type="PackedScene" uid="uid://nj5cc873xf3c" path="res://modelo_enemigos/Ch30_nonPBR.fbx" id="5_kb137"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rqhm7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oijh7"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_7xe8f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kb137"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_r0uil"]
+geometry_parsed_geometry_type = 0
+cell_size = 66.37
+agent_height = 1.8
+agent_radius = 0.4
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ciwww"]
+size = Vector3(20, 0.2, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cckps"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oijh7"]
+
+[sub_resource type="Environment" id="Environment_7xe8f"]
+ambient_light_source = 2
+ambient_light_color = Color(0.20027253, 0, 0.23216501, 1)
+ambient_light_energy = 0.3
+
+[node name="Node3D" type="Node3D" unique_id=1177579274]
+
+[node name="ancianoEnemy" type="CharacterBody3D" parent="." unique_id=285004060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("2_rqhm7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ancianoEnemy" unique_id=1079570721]
+shape = SubResource("CapsuleShape3D_rqhm7")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="ancianoEnemy" unique_id=172406686]
+path_desired_distance = 0.5
+navigation_layers = 255
+height = 1.8
+radius = 0.4
+
+[node name="RayCast3D" type="RayCast3D" parent="ancianoEnemy" unique_id=361840589]
+target_position = Vector3(0, 0, -18)
+
+[node name="cuerpo" type="Node3D" parent="ancianoEnemy" unique_id=383067380]
+
+[node name="torso" type="MeshInstance3D" parent="ancianoEnemy/cuerpo" unique_id=1682193022]
+transform = Transform3D(0.8, 0, 0, 0, 1.2, 0, 0, 0, 0.4, 0, 1.2, 0)
+visible = false
+mesh = SubResource("BoxMesh_oijh7")
+
+[node name="cabeza" type="MeshInstance3D" parent="ancianoEnemy/cuerpo" unique_id=2049997039]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.1, 0)
+visible = false
+mesh = SubResource("SphereMesh_7xe8f")
+
+[node name="brazo_izq" type="MeshInstance3D" parent="ancianoEnemy/cuerpo" unique_id=1437597560]
+transform = Transform3D(0.25, 0, 0, 0, 1, 0, 0, 0, 0.25, -0.6, 1.2, 0)
+visible = false
+mesh = SubResource("BoxMesh_kb137")
+
+[node name="brazo_der" type="MeshInstance3D" parent="ancianoEnemy/cuerpo" unique_id=1267873080]
+transform = Transform3D(0.25, 0, 0, 0, 1, 0, 0, 0, 0.25, 0.6, 1.2, 0)
+visible = false
+mesh = SubResource("BoxMesh_kb137")
+
+[node name="pierna_izq" type="MeshInstance3D" parent="ancianoEnemy/cuerpo" unique_id=174729397]
+transform = Transform3D(0.3, 0, 0, 0, 1.2, 0, 0, 0, 0.3, -0.3, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_kb137")
+
+[node name="pierna_der" type="MeshInstance3D" parent="ancianoEnemy/cuerpo" unique_id=1032285271]
+transform = Transform3D(0.3, 0, 0, 0, 1.2, 0, 0, 0, 0.3, 0.3, 0, 0)
+visible = false
+mesh = SubResource("BoxMesh_kb137")
+
+[node name="detectarJugador" type="AudioStreamPlayer3D" parent="ancianoEnemy" unique_id=1619143030]
+stream = ExtResource("2_7xe8f")
+
+[node name="Ch30_nonPBR" parent="ancianoEnemy" unique_id=1352194173 instance=ExtResource("5_kb137")]
+transform = Transform3D(-1.5497731, 0, 0.026510367, 0, 1.5499998, 0, -0.026510367, 0, -1.5497731, 0, -0.40812397, 0)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1584414105]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.2897196)
+navigation_mesh = SubResource("NavigationMesh_r0uil")
+
+[node name="suelo" type="StaticBody3D" parent="NavigationRegion3D" unique_id=617393918]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/suelo" unique_id=1398635182]
+shape = SubResource("BoxShape3D_ciwww")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/suelo" unique_id=676537569]
+transform = Transform3D(20, 0, 0, 0, 0.2, 0, 0, 0, 20, 0, 0, 0)
+custom_aabb = AABB(40, 0, 0, 0, 0, 0)
+mesh = SubResource("BoxMesh_cckps")
+
+[node name="Jugador" type="CharacterBody3D" parent="NavigationRegion3D" unique_id=2043555168 groups=["jugador"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -8)
+script = ExtResource("1_d3jai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Jugador" unique_id=781177658]
+shape = SubResource("CapsuleShape3D_oijh7")
+
+[node name="Camera3D" type="Camera3D" parent="NavigationRegion3D/Jugador" unique_id=1292069783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="NavigationRegion3D/Jugador/Camera3D" unique_id=1811953586]
+light_energy = 2.0
+spot_range = 32.047
+spot_angle = 30.23
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="NavigationRegion3D" unique_id=387350798]
+environment = SubResource("Environment_7xe8f")
+
+[node name="punto1" type="Marker3D" parent="." unique_id=333810525]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.017, 0)
+
+[node name="punto2" type="Marker3D" parent="." unique_id=2112105994]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.026, 0)
+
+[node name="punto3" type="Marker3D" parent="." unique_id=1221171014]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+
+[node name="Jugador" type="CharacterBody3D" parent="." unique_id=342647895 groups=["jugador"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 26.345825)
+script = ExtResource("1_d3jai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Jugador" unique_id=1664482555]
+shape = SubResource("CapsuleShape3D_oijh7")
+
+[node name="Camera3D" type="Camera3D" parent="Jugador" unique_id=1594945855]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Jugador/Camera3D" unique_id=397056455]
+light_energy = 2.0
+spot_range = 32.047
+spot_angle = 30.23
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=497958793]
+environment = SubResource("Environment_7xe8f")
+
+[node name="fondoMusica" type="AudioStreamPlayer3D" parent="." unique_id=1864281963]
+stream = ExtResource("4_kb137")
+volume_db = 57.5
+autoplay = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=403354169]
+use_collision = true
+size = Vector3(100, 1, 100)
