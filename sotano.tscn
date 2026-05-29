@@ -21,6 +21,8 @@
 [ext_resource type="Script" uid="uid://6orpsh6yjs35" path="res://script/areaPuerta3D.gd" id="19_ixt30"]
 [ext_resource type="AudioStream" uid="uid://b8j1caa7srn7" path="res://sonidos/chirridoPuerta.mp3" id="20_ixt30"]
 [ext_resource type="PackedScene" uid="uid://j2lc1qpunxnb" path="res://modelos/generador/rusted_generator.glb" id="21_fu8n0"]
+[ext_resource type="PackedScene" uid="uid://c207n3rhxxqf" path="res://modelos/gasolina/gas_gallon.glb" id="22_4br5c"]
+[ext_resource type="PackedScene" uid="uid://c6cbu1ufy5q8o" path="res://modelos/llaveCuarto/stylized_key.glb" id="23_cb12l"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tpx6v"]
 
@@ -88,6 +90,9 @@ size = Vector3(1.5755615, 2.2052002, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_cb12l"]
 size = Vector3(2.001831, 0.8959961, 3.223877)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_akw8o"]
+size = Vector3(21.235722, 20.146606, 10.369141)
+
 [node name="Node3D" type="Node3D" unique_id=2091514770]
 
 [node name="Jugador" type="CharacterBody3D" parent="." unique_id=906516204 groups=["jugador"]]
@@ -144,7 +149,7 @@ transform = Transform3D(1.0000002, 0, 0, 0, 1.0000002, 0, 0, 0, 1.0000002, 0.073
 shape = SubResource("BoxShape3D_yylae")
 
 [node name="unBano" parent="." unique_id=890210145 instance=ExtResource("9_ru7ok")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 9.129546, 0.22093159, -12.104716)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 8.769098, 0.22093159, -11.683749)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="unBano" unique_id=1487221376]
 
@@ -174,9 +179,9 @@ size = Vector3(8.371582, 11, 1)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared9" type="CSGBox3D" parent="." unique_id=1078697635]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.349738, 2.0000005, -35.663116)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.62815, 2.0000005, -35.663116)
 use_collision = true
-size = Vector3(43.31482, 11, 1)
+size = Vector3(44.757996, 11, 1)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared6" type="CSGBox3D" parent="." unique_id=1995190759]
@@ -198,9 +203,9 @@ size = Vector3(8.371582, 4.0654297, 0.9005127)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared2" type="CSGBox3D" parent="." unique_id=256939724]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0000005, 9.999998)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.68042, 2.0000005, 9.999998)
 use_collision = true
-size = Vector3(20, 11, 1)
+size = Vector3(14.63916, 11, 1)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared3" type="CSGBox3D" parent="." unique_id=2033586446]
@@ -222,9 +227,9 @@ size = Vector3(1, 11, 15.5979)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared13" type="CSGBox3D" parent="." unique_id=1131313435]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.469803, 2.0000005, -14.382048)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.469803, 2.0000005, 7.499155)
 use_collision = true
-size = Vector3(1, 11, 15.5979)
+size = Vector3(1, 11, 59.360306)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared14" type="CSGBox3D" parent="." unique_id=808969993]
@@ -308,10 +313,10 @@ shape = SubResource("BoxShape3D_fu8n0")
 [node name="Sketchfab_Scene" parent="enemigo" unique_id=1620856512 instance=ExtResource("18_ixt30")]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 1.8008137, 0, 0)
 
-[node name="Sketchfab_model" parent="enemigo/Sketchfab_Scene" index="0" unique_id=1666931723]
+[node name="Sketchfab_model" parent="enemigo/Sketchfab_Scene" index="0" unique_id=2046319812]
 transform = Transform3D(-0.9982397, 0.059306454, 2.5923677e-09, 0, -4.3711385e-08, 0.99999994, 0.059306454, 0.9982397, 4.3634447e-08, -6.512111, 0, 0)
 
-[node name="Skeleton3D" parent="enemigo/Sketchfab_Scene/Sketchfab_model/79f45bb58c474f7584f64d782ba3085d_fbx/Object_2/RootNode/Model/Object_5" parent_id_path=PackedInt32Array(1620856512, 1238928104) index="0" unique_id=1151634912]
+[node name="Skeleton3D" parent="enemigo/Sketchfab_Scene/Sketchfab_model/79f45bb58c474f7584f64d782ba3085d_fbx/Object_2/RootNode/Model/Object_5" parent_id_path=PackedInt32Array(1620856512, 1645871312) index="0" unique_id=571908890]
 bones/2/position = Vector3(0.016679991, 0.32574165, 1.1085331)
 bones/2/rotation = Quaternion(-0.015853703, 7.5488714e-08, 1.1976798e-09, 0.9998744)
 bones/3/rotation = Quaternion(-0.0060430435, 3.509637e-12, 8.526513e-13, 0.99998176)
@@ -438,5 +443,85 @@ script = ExtResource("19_ixt30")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="pivotePuerta2/pivotePuerta" unique_id=353688217]
 libraries/ = SubResource("AnimationLibrary_wyvlr")
+
+[node name="Sketchfab_Scene3" parent="." unique_id=1867623969 instance=ExtResource("22_4br5c")]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, -4.003937, 9.536743e-07, 18.455399)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene3" unique_id=616225751]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene3/StaticBody3D" unique_id=1896415801]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6944962, 9.573303, -0.82128906)
+shape = SubResource("BoxShape3D_akw8o")
+
+[node name="Pared18" type="CSGBox3D" parent="." unique_id=2101286518]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.093508, 2.0000005, 13.348343)
+use_collision = true
+size = Vector3(1, 11, 6.5859375)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared18" type="CSGBox3D" parent="Pared18" unique_id=1437153645]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10698891, 0.8859868, 9.204321)
+use_collision = true
+size = Vector3(1, 9.008362, 5.2634277)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared18" type="CSGBox3D" parent="Pared18/Pared18" unique_id=703062572]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0006656647, 3.8169293, -4.202286)
+use_collision = true
+size = Vector3(0.95581055, 1.5376663, 4.7454834)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared19" type="CSGBox3D" parent="." unique_id=1887848411]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.93031, 2.0000005, 15.860725)
+use_collision = true
+size = Vector3(1, 11, 17.590698)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared19" type="CSGBox3D" parent="Pared19" unique_id=1228522663]
+transform = Transform3D(0.03685303, 0, 0.9993207, 0, 1, 0, -0.9993207, 0, 0.03685303, 6.7895775, -0.08798838, 8.517136)
+use_collision = true
+size = Vector3(1, 11, 14.703552)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="modelo" parent="." unique_id=118521491 instance=ExtResource("17_dl0jb")]
+transform = Transform3D(-0.035036653, 0, -1.6796346, 0, 1.68, 0, 1.6796346, 0, -0.035036653, 4.5704823, 0, 18.335041)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="modelo" unique_id=416271321]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="modelo/StaticBody3D" unique_id=323403585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0052480698, 1.5036316, -0.1381836)
+shape = SubResource("BoxShape3D_7qdvq")
+
+[node name="Pared20" type="CSGBox3D" parent="." unique_id=415701872]
+transform = Transform3D(0.01991291, 0, 0.9998017, 0, 1, 0, -0.9998017, 0, 0.01991291, 0.8179095, 2.017942, 36.95003)
+use_collision = true
+size = Vector3(1, 11, 34.23364)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared21" type="CSGBox3D" parent="." unique_id=1825059368]
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -16.111061, 1.9950118, -2.1064188)
+use_collision = true
+size = Vector3(1, 11, 78.81479)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared22" type="CSGBox3D" parent="." unique_id=404459233]
+transform = Transform3D(0.017871222, 0, -0.9998404, 0, 1, 0, 0.9998404, 0, 0.017871222, 0.6756053, 2.019617, -41.780205)
+use_collision = true
+size = Vector3(1, 11, 34.8681)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Sketchfab_Scene4" parent="." unique_id=646679129 instance=ExtResource("22_4br5c")]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 5.682825, 9.536743e-07, -8.675585)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene4" unique_id=1439230013]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene4/StaticBody3D" unique_id=842032323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.6944962, 9.573303, -0.82128906)
+shape = SubResource("BoxShape3D_akw8o")
+
+[node name="Sketchfab_Scene5" parent="." unique_id=834103088 instance=ExtResource("23_cb12l")]
+transform = Transform3D(4.1223764e-05, 0.01997869, 0.0009220348, 0.0008923618, -0.00092295586, 0.019958753, 0.019980038, 1.1920929e-09, -0.00089331355, 9.272571, 0.06063521, -10.892677)
 
 [editable path="enemigo/Sketchfab_Scene"]
