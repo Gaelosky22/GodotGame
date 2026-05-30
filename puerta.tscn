@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://bamyi2y1v5gyi" path="res://script/puerta.gd" id="2_8gvf5"]
 [ext_resource type="Script" uid="uid://6orpsh6yjs35" path="res://script/areaPuerta3D.gd" id="3_1h0p7"]
 [ext_resource type="PackedScene" uid="uid://c3tq0kiqol18o" path="res://modelos/enemigoNuevoMapa/overseer.glb" id="4_ufeg8"]
-[ext_resource type="Script" uid="uid://8x530hgb6gyo" path="res://script/enemigoPerro.gd" id="6_xb50p"]
+[ext_resource type="Script" uid="uid://8x530hgb6gyo" path="res://script/enemigo.gd" id="6_xb50p"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xb50p"]
 

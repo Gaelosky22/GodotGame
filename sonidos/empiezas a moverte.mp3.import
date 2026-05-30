@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b4wxl6psk6nij"
+path="res://.godot/imported/empiezas a moverte.mp3-76750cb6a9b8f54b39c94d62b315cde1.mp3str"
+
+[deps]
+
+source_file="res://sonidos/empiezas a moverte.mp3"
+dest_files=["res://.godot/imported/empiezas a moverte.mp3-76750cb6a9b8f54b39c94d62b315cde1.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
