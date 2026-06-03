@@ -45,6 +45,8 @@ var tiempo_temblor = 0.0
 # HUD
 var hud : CanvasLayer
 
+var cinematica_muerte = null
+
 @onready var camara = $Camera3D
 @onready var linterna = $Camera3D/SpotLight3D
 
@@ -52,6 +54,17 @@ func _ready():
 	add_to_group("jugador")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	crear_hud()
+	# Audio de inicio
+	await get_tree().create_timer(15.0).timeout
+	if not is_inside_tree(): return
+	var audio_inicio = AudioStreamPlayer.new()
+	audio_inicio.stream = load("res://sonidos/empiezas a moverte.mp3")
+	get_tree().current_scene.add_child(audio_inicio)
+	audio_inicio.play()
+	await audio_inicio.finished
+	audio_inicio.queue_free()
+	process_mode = Node.PROCESS_MODE_PAUSABLE
+	cinematica_muerte = load("res://cinematic/animation_muerte.ogv")
 
 # ─── HUD ───────────────────────────────────────────────────────────────────
 
@@ -314,7 +327,40 @@ func morir():
 	muerto = true
 	bloqueado = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	_reproducir_cinematica_muerte()
+
+func _reproducir_cinematica_muerte():
+	var capa = CanvasLayer.new()
+	capa.layer = 10
+	add_child(capa)
+	
+	# Pantalla negra inmediata
+	var fondo = ColorRect.new()
+	fondo.color = Color(0, 0, 0, 1)
+	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
+	capa.add_child(fondo)
+	
+	# Silenciar todo
+	AudioServer.set_bus_volume_db(0, -80)
+	
+	if cinematica_muerte == null:
+		print("ERROR: cinematica no cargada")
+		mostrar_menu_muerte()
+		return
+	
+	var video = VideoStreamPlayer.new()
+	video.stream = cinematica_muerte
+	video.expand = true
+	video.set_anchors_preset(Control.PRESET_FULL_RECT)
+	capa.add_child(video)
+	video.play()
+	print("Video playing: ", video.is_playing())
+	
+	# Timeout de seguridad — si el video no termina en 30s igual muestra el menú
+	var timer = get_tree().create_timer(30.0)
+	await video.finished
 	mostrar_menu_muerte()
+	AudioServer.set_bus_volume_db(0, 0)
 
 func mostrar_menu_muerte():
 	var menu = CanvasLayer.new()

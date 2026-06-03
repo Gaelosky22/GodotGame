@@ -23,3 +23,7 @@ func interactuar():
 		
 	else:
 		anim.play_backwards(nombre_animacion)
+	
+	var enemigo = get_tree().get_root().find_child("enemigo", true, false)
+	if enemigo and enemigo.has_method("escuchar_puerta"):
+		enemigo.escuchar_puerta(global_position)

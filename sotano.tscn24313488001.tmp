@@ -513,7 +513,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.19237518, -0.48645782, 0.0
 shape = SubResource("BoxShape3D_14hn0")
 
 [node name="enemigo" type="CharacterBody3D" parent="NavigationRegion3D" unique_id=749191194]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -11.973398, 0.24542809, -20.645552)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -12.362023, 0.24542809, -20.298197)
 collision_mask = 2
 script = ExtResource("19_fu8n0")
 
