@@ -1,20 +1,19 @@
 extends Node3D
 
-# ─── CAMA ──────────────────────────────────────────────────────────────────
+# ─── CLOSET ────────────────────────────────────────────────────────────────
 # Estructura del nodo en el editor:
-#   Cama (Node3D)  ← este script
+#   Closet (Node3D)  ← este script
 #     MeshInstance3D
 #     Area3D
-#       CollisionShape3D  (BoxShape o SphereShape, ajusta al tamaño de la cama)
+#       CollisionShape3D  (BoxShape ajustado al interior del closet)
 #
-# En el Area3D activa: Monitorable = true, Monitoring = true
-# Layer y Mask: asegúrate de que el jugador esté en la capa que el área detecta
+# Diferencia con la cama: la cámara NO baja, se queda a la misma altura.
+# El jugador solo queda bloqueado (sin moverse) mientras está adentro.
 
 func _ready():
-	# Conectar señales del Area3D hijo
 	var area = get_node_or_null("MeshInstance3D/Area3D")
 	if area == null:
-		push_error("cama.gd: no se encontró nodo Area3D hijo. Agrégalo en el editor.")
+		push_error("closet.gd: no se encontró nodo Area3D hijo. Agrégalo en el editor.")
 		return
 	area.body_entered.connect(_on_body_entered)
 	area.body_exited.connect(_on_body_exited)
@@ -23,9 +22,8 @@ func _on_body_entered(body):
 	if not body.is_in_group("jugador"):
 		return
 	body.puede_esconderse = true
-	body.cama_posicion = global_position
-	# Informar al jugador que el escondite cercano es tipo CAMA
-	body.tipo_escondite_cercano = body.TipoEscondite.CAMA
+	# Informar al jugador que el escondite cercano es tipo CLOSET
+	body.tipo_escondite_cercano = body.TipoEscondite.CLOSET
 
 func _on_body_exited(body):
 	if not body.is_in_group("jugador"):

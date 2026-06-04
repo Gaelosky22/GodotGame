@@ -6,6 +6,7 @@ func _ready():
 	add_to_group("puertas_generador")
 
 func interactuar():
+	
 	if abierta: return
 
 	var gm = get_tree().get_root().find_child("GameManager", true, false)

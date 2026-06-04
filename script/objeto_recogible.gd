@@ -2,7 +2,6 @@ extends Node3D
 
 @export var nombre_display: String = "Objeto"
 @export var es_pesado: bool = false
-
 var agarrado = false
 var posicion_original: Vector3
 var rotacion_original: Vector3
@@ -11,17 +10,14 @@ func _ready():
 	add_to_group("objetos_recogibles")
 	posicion_original = global_position
 	rotacion_original = rotation
-
 	var area = Area3D.new()
 	area.name = "AreaDeteccion"
 	add_child(area)
-
 	var shape = CollisionShape3D.new()
 	var esfera = SphereShape3D.new()
 	esfera.radius = 75.0
 	shape.shape = esfera
 	area.add_child(shape)
-
 	area.body_entered.connect(_on_jugador_cerca)
 	area.body_exited.connect(_on_jugador_lejos)
 
@@ -47,16 +43,11 @@ func soltar():
 	agarrado = false
 	var camara = get_parent()
 	var escena = camara.get_tree().current_scene
-
-	# Posición frente al jugador
 	var pos_global = camara.global_position + camara.global_transform.basis.z * 1.2
-
 	camara.remove_child(self)
 	escena.add_child(self)
 	global_position = pos_global
 	rotation = Vector3(0, 0, 0)
-
-	# Bajar al suelo con raycast
 	var espacio = escena.get_world_3d().direct_space_state
 	var query = PhysicsRayQueryParameters3D.create(
 		global_position,
@@ -66,6 +57,5 @@ func soltar():
 	var resultado = espacio.intersect_ray(query)
 	if resultado:
 		global_position = resultado.position + Vector3.UP * 0.1
-
 	if has_node("AreaDeteccion"):
 		get_node("AreaDeteccion").monitoring = true

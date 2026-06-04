@@ -5,17 +5,20 @@ var golpes_maximos = 3
 var muerto = false
 
 var velocidad = 5.0
-var velocidad_con_carga = 2.8   # más lento cargando galón
+var velocidad_con_carga = 2.8
 var gravedad = 9.8
 var sensibilidad_mouse = 0.002
 
 var cama_posicion = Vector3.ZERO
 
-# Esconderse
+# ─── ESCONDERSE ────────────────────────────────────────────────────────────
+# Cada escondite (cama.gd / closet.gd) escribe en estas variables al entrar/salir del Area3D
+enum TipoEscondite { NINGUNO, CAMA, CLOSET }
+var tipo_escondite_cercano: TipoEscondite = TipoEscondite.NINGUNO
+
 var escondido = false
 var puede_esconderse = false
 var posicion_normal = Vector3(0, 0.7, 0)
-var posicion_escondido = Vector3(0, -0.3, 0)
 var bloqueado = false
 
 # Linterna
@@ -24,8 +27,8 @@ var overlay_dano: ColorRect
 
 # Puertas / interacción
 var puerta_cercana = null
-var objeto_cercano = null       # objeto que se puede agarrar
-var objeto_en_mano = null       # objeto que se está cargando
+var objeto_cercano = null
+var objeto_en_mano = null
 var texto_interaccion: Label
 var label_objeto_en_mano: Label
 
@@ -43,8 +46,7 @@ var recuperando = false
 var tiempo_temblor = 0.0
 
 # HUD
-var hud : CanvasLayer
-
+var hud: CanvasLayer
 var cinematica_muerte = null
 
 @onready var camara = $Camera3D
@@ -54,7 +56,6 @@ func _ready():
 	add_to_group("jugador")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	crear_hud()
-	# Audio de inicio
 	await get_tree().create_timer(15.0).timeout
 	if not is_inside_tree(): return
 	var audio_inicio = AudioStreamPlayer.new()
@@ -72,7 +73,6 @@ func crear_hud():
 	hud = CanvasLayer.new()
 	add_child(hud)
 
-	# Fondo stamina
 	var fondo = ColorRect.new()
 	fondo.color = Color(0, 0, 0, 0.6)
 	fondo.size = Vector2(204, 18)
@@ -86,7 +86,6 @@ func crear_hud():
 	barra.position = Vector2(22, 22)
 	hud.add_child(barra)
 
-	# Label objeto en mano (abajo centro)
 	label_objeto_en_mano = Label.new()
 	label_objeto_en_mano.name = "LabelObjeto"
 	label_objeto_en_mano.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -97,7 +96,6 @@ func crear_hud():
 	label_objeto_en_mano.visible = false
 	hud.add_child(label_objeto_en_mano)
 
-	# Texto interacción (centro pantalla)
 	texto_interaccion = Label.new()
 	texto_interaccion.name = "TextoInteraccion"
 	texto_interaccion.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -110,7 +108,6 @@ func crear_hud():
 	texto_interaccion.visible = false
 	hud.add_child(texto_interaccion)
 
-	# Overlay daño
 	overlay_dano = ColorRect.new()
 	overlay_dano.color = Color(1, 0, 0, 0.0)
 	overlay_dano.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -134,7 +131,7 @@ func actualizar_hud():
 	else:
 		barra.color.a = 1.0
 
-	# Texto interacción
+	# Hint de interacción — prioridad: objeto > puerta > escondite
 	var hint = ""
 	if objeto_cercano != null and objeto_en_mano == null:
 		hint = "[E] Recoger " + objeto_cercano.nombre_display
@@ -142,11 +139,16 @@ func actualizar_hud():
 		hint = "[E] Soltar " + objeto_en_mano.nombre_display
 	elif puerta_cercana != null:
 		hint = "[E] Abrir puerta"
+	elif puede_esconderse and not escondido:
+		match tipo_escondite_cercano:
+			TipoEscondite.CAMA:    hint = "[E] Esconderse (cama)"
+			TipoEscondite.CLOSET:  hint = "[E] Esconderse (closet)"
+	elif escondido:
+		hint = "[E] Salir del escondite"
 
 	texto_interaccion.text = hint
 	texto_interaccion.visible = hint != ""
 
-	# Label objeto en mano
 	if objeto_en_mano != null:
 		label_objeto_en_mano.text = "Cargando: " + objeto_en_mano.nombre_display
 		label_objeto_en_mano.visible = true
@@ -162,56 +164,84 @@ func _input(event):
 		camara.rotation.x = clamp(camara.rotation.x, -1.2, 1.2)
 
 	if event is InputEventKey and event.pressed and not event.echo:
-
 		if event.keycode == KEY_ESCAPE:
 			mostrar_menu_pausa()
-
 		elif event.keycode == KEY_F:
 			linterna_encendida = !linterna_encendida
 			linterna.visible = linterna_encendida
-
 		elif event.keycode == KEY_E:
 			_interactuar()
 
 # ─── INTERACCIÓN ───────────────────────────────────────────────────────────
 
 func _interactuar():
-	# Si cargo algo, intentar usarlo en generador/puerta cercana
+	# 1. Si cargo algo
 	if objeto_en_mano != null:
-		# Ver si hay generador o puerta cerca para depositar
-		var depositado = await _intentar_depositar()
-		if depositado:
+		# Primero intentar usarlo en puerta cercana
+		if puerta_cercana != null and puerta_cercana.has_method("interactuar"):
+			puerta_cercana.interactuar()
 			return
-		# Si no, soltar en el suelo
-		_soltar_objeto()
+		# Luego intentar depositar en generador
+		var depositado = await _intentar_depositar()
+		if not depositado:
+			_soltar_objeto()
 		return
 
-	# Agarrar objeto cercano
+	# 2. Recoger objeto cercano
 	if objeto_cercano != null:
 		_agarrar_objeto(objeto_cercano)
 		return
 
-	# Interactuar con puerta
+	# 3. Puerta cercana sin objeto
 	if puerta_cercana != null:
 		if puerta_cercana.has_method("interactuar"):
 			puerta_cercana.interactuar()
 		return
 
-	# Esconderse
-	if puede_esconderse:
-		escondido = !escondido
-		if escondido:
-			camara.position = Vector3(0, 2.5, 3.0)
-			camara.rotation.x = deg_to_rad(-25)
-			bloqueado = true
-		else:
-			camara.position = posicion_normal
-			camara.rotation.x = 0.0
-			bloqueado = false
+	# 4. Escondite
+	if puede_esconderse or escondido:
+		match tipo_escondite_cercano:
+			TipoEscondite.CAMA:    _toggle_escondido_cama()
+			TipoEscondite.CLOSET:  _toggle_escondido_closet()
+
+# Esconderse en cama: la cámara baja simulando estar bajo la cama
+# Esconderse en cama: cámara pasa a tercera persona con vista desde atrás/arriba
+func _toggle_escondido_cama():
+	if not escondido and objeto_en_mano != null:
+		mostrar_mensaje_temporal("No puedes esconderte cargando algo", 2.0)
+		return
+	escondido = !escondido
+	bloqueado = escondido
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	if escondido:
+		# Tercera persona: atrás y arriba
+		tween.tween_property(camara, "position", Vector3(0, 1.8, 2.8), 0.5)
+		tween.parallel().tween_property(camara, "rotation", Vector3(deg_to_rad(-18), 0, 0), 0.5)
+	else:
+		tween.tween_property(camara, "position", posicion_normal, 0.5)
+		tween.parallel().tween_property(camara, "rotation", Vector3(0, 0, 0), 0.5)
+
+# Esconderse en closet: mismo efecto de tercera persona
+func _toggle_escondido_closet():
+	if not escondido and objeto_en_mano != null:
+		mostrar_mensaje_temporal("No puedes esconderte cargando algo", 2.0)
+		return
+	escondido = !escondido
+	bloqueado = escondido
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	if escondido:
+		# Tercera persona igual que cama — misma experiencia visual
+		tween.tween_property(camara, "position", Vector3(0, 1.8, 2.8), 0.5)
+		tween.parallel().tween_property(camara, "rotation", Vector3(deg_to_rad(-18), 0, 0), 0.5)
+	else:
+		tween.tween_property(camara, "position", posicion_normal, 0.5)
+		tween.parallel().tween_property(camara, "rotation", Vector3(0, 0, 0), 0.5)
 
 func _agarrar_objeto(obj):
 	objeto_en_mano = obj
-	obj.agarrar(camara)   # el objeto se adjunta a la cámara
+	obj.agarrar(camara)
 
 func _soltar_objeto():
 	if objeto_en_mano == null: return
@@ -219,7 +249,6 @@ func _soltar_objeto():
 	objeto_en_mano = null
 
 func _intentar_depositar() -> bool:
-	# Buscar generador o puerta cercana que acepte el objeto
 	var nodos_cercanos = []
 	for grupo in ["generadores", "puertas_llave"]:
 		nodos_cercanos += get_tree().get_nodes_in_group(grupo)
@@ -261,11 +290,9 @@ func _physics_process(delta):
 
 	var corriendo = Input.is_key_pressed(KEY_SHIFT) and puede_correr and stamina > 0
 
-	# Velocidad base — más lento si carga galón
 	var vel_base = velocidad_con_carga if (objeto_en_mano != null and objeto_en_mano.es_pesado) else velocidad
 	var vel = vel_base * 1.6 if corriendo else vel_base
 
-	# Stamina
 	if corriendo:
 		stamina -= gasto_stamina * delta
 		stamina = max(stamina, 0)
@@ -288,7 +315,6 @@ func _physics_process(delta):
 
 	actualizar_hud()
 
-	# Movimiento
 	var direccion = Vector3.ZERO
 	if Input.is_key_pressed(KEY_W): direccion -= transform.basis.z
 	if Input.is_key_pressed(KEY_S): direccion += transform.basis.z
@@ -297,7 +323,6 @@ func _physics_process(delta):
 	if direccion != Vector3.ZERO:
 		direccion = direccion.normalized()
 
-	# Temblor cámara al correr
 	if corriendo and direccion != Vector3.ZERO:
 		tiempo_temblor += delta * 12.0
 		camara.rotation.z = sin(tiempo_temblor) * 0.04
@@ -333,31 +358,26 @@ func _reproducir_cinematica_muerte():
 	var capa = CanvasLayer.new()
 	capa.layer = 10
 	add_child(capa)
-	
-	# Pantalla negra inmediata
+
 	var fondo = ColorRect.new()
 	fondo.color = Color(0, 0, 0, 1)
 	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
 	capa.add_child(fondo)
-	
-	# Silenciar todo
+
 	AudioServer.set_bus_volume_db(0, -80)
-	
+
 	if cinematica_muerte == null:
 		print("ERROR: cinematica no cargada")
 		mostrar_menu_muerte()
 		return
-	
+
 	var video = VideoStreamPlayer.new()
 	video.stream = cinematica_muerte
 	video.expand = true
 	video.set_anchors_preset(Control.PRESET_FULL_RECT)
 	capa.add_child(video)
 	video.play()
-	print("Video playing: ", video.is_playing())
-	
-	# Timeout de seguridad — si el video no termina en 30s igual muestra el menú
-	var timer = get_tree().create_timer(30.0)
+
 	await video.finished
 	mostrar_menu_muerte()
 	AudioServer.set_bus_volume_db(0, 0)
