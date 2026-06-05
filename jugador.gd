@@ -11,8 +11,6 @@ var sensibilidad_mouse = 0.002
 
 var cama_posicion = Vector3.ZERO
 
-# ─── ESCONDERSE ────────────────────────────────────────────────────────────
-# Cada escondite (cama.gd / closet.gd) escribe en estas variables al entrar/salir del Area3D
 enum TipoEscondite { NINGUNO, CAMA, CLOSET }
 var tipo_escondite_cercano: TipoEscondite = TipoEscondite.NINGUNO
 
@@ -21,18 +19,15 @@ var puede_esconderse = false
 var posicion_normal = Vector3(0, 0.7, 0)
 var bloqueado = false
 
-# Linterna
 var linterna_encendida = true
 var overlay_dano: ColorRect
 
-# Puertas / interacción
 var puerta_cercana = null
 var objeto_cercano = null
 var objeto_en_mano = null
 var texto_interaccion: Label
 var label_objeto_en_mano: Label
 
-# Stamina
 var stamina = 100.0
 var stamina_maxima = 100.0
 var gasto_stamina = 25.0
@@ -42,12 +37,12 @@ var timer_recuperacion = 0.0
 var delay_recuperacion = 3.0
 var recuperando = false
 
-# Temblor cámara
 var tiempo_temblor = 0.0
-
-# HUD
 var hud: CanvasLayer
-var cinematica_muerte = null
+
+# Precargar cinematica al inicio
+var cinematica_muerte = load("res://cinematic/jumpscare-perron2.ogv")
+var audio_muerte = load("res://sonidos/jumpscare dos.mp3")
 
 @onready var camara = $Camera3D
 @onready var linterna = $Camera3D/SpotLight3D
@@ -56,16 +51,18 @@ func _ready():
 	add_to_group("jugador")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	crear_hud()
+	# Audio de inicio después de 15s
+	_reproducir_audio_inicio()
+
+func _reproducir_audio_inicio():
 	await get_tree().create_timer(15.0).timeout
 	if not is_inside_tree(): return
-	var audio_inicio = AudioStreamPlayer.new()
-	audio_inicio.stream = load("res://sonidos/empiezas a moverte.mp3")
-	get_tree().current_scene.add_child(audio_inicio)
-	audio_inicio.play()
-	await audio_inicio.finished
-	audio_inicio.queue_free()
-	process_mode = Node.PROCESS_MODE_PAUSABLE
-	cinematica_muerte = load("res://cinematic/animation_muerte.ogv")
+	var audio = AudioStreamPlayer.new()
+	audio.stream = load("res://sonidos/empiezas a moverte.mp3")
+	get_tree().current_scene.add_child(audio)
+	audio.play()
+	await audio.finished
+	audio.queue_free()
 
 # ─── HUD ───────────────────────────────────────────────────────────────────
 
@@ -131,18 +128,17 @@ func actualizar_hud():
 	else:
 		barra.color.a = 1.0
 
-	# Hint de interacción — prioridad: objeto > puerta > escondite
 	var hint = ""
 	if objeto_cercano != null and objeto_en_mano == null:
-		hint = "[E] Recoger " + objeto_cercano.nombre_display
+		hint = "[R] Recoger " + objeto_cercano.nombre_display
 	elif objeto_en_mano != null:
-		hint = "[E] Soltar " + objeto_en_mano.nombre_display
+		hint = "[R] Soltar/Depositar " + objeto_en_mano.nombre_display
 	elif puerta_cercana != null:
 		hint = "[E] Abrir puerta"
 	elif puede_esconderse and not escondido:
 		match tipo_escondite_cercano:
-			TipoEscondite.CAMA:    hint = "[E] Esconderse (cama)"
-			TipoEscondite.CLOSET:  hint = "[E] Esconderse (closet)"
+			TipoEscondite.CAMA:   hint = "[E] Esconderse (cama)"
+			TipoEscondite.CLOSET: hint = "[E] Esconderse (closet)"
 	elif escondido:
 		hint = "[E] Salir del escondite"
 
@@ -170,69 +166,59 @@ func _input(event):
 			linterna_encendida = !linterna_encendida
 			linterna.visible = linterna_encendida
 		elif event.keycode == KEY_E:
-			_interactuar()
+			_interactuar_escondite()
+		elif event.keycode == KEY_R:
+			_interactuar_objeto()
 
 # ─── INTERACCIÓN ───────────────────────────────────────────────────────────
 
-func _interactuar():
-	# 1. Si cargo algo
-	if objeto_en_mano != null:
-		# Primero intentar usarlo en puerta cercana
-		if puerta_cercana != null and puerta_cercana.has_method("interactuar"):
-			puerta_cercana.interactuar()
-			return
-		# Luego intentar depositar en generador
-		var depositado = await _intentar_depositar()
-		if not depositado:
-			_soltar_objeto()
-		return
-
-	# 2. Recoger objeto cercano
-	if objeto_cercano != null:
-		_agarrar_objeto(objeto_cercano)
-		return
-
-	# 3. Puerta cercana sin objeto
+# E — escondites y puertas
+func _interactuar_escondite():
 	if puerta_cercana != null:
 		if puerta_cercana.has_method("interactuar"):
 			puerta_cercana.interactuar()
 		return
-
-	# 4. Escondite
 	if puede_esconderse or escondido:
 		match tipo_escondite_cercano:
-			TipoEscondite.CAMA:    _toggle_escondido_cama()
-			TipoEscondite.CLOSET:  _toggle_escondido_closet()
+			TipoEscondite.CAMA:   _toggle_escondido_cama()
+			TipoEscondite.CLOSET: _toggle_escondido_closet()
 
-# Esconderse en cama: la cámara baja simulando estar bajo la cama
-# Esconderse en cama: cámara pasa a tercera persona con vista desde atrás/arriba
-func _toggle_escondido_cama():
-	if not escondido and objeto_en_mano != null:
-		mostrar_mensaje_temporal("No puedes esconderte cargando algo", 2.0)
+# R — recoger, soltar y depositar objetos
+func _interactuar_objeto():
+	if objeto_en_mano != null:
+		# Intentar depositar primero
+		var depositado = await _intentar_depositar()
+		if not depositado:
+			_soltar_objeto()
 		return
+	if objeto_cercano != null:
+		_agarrar_objeto(objeto_cercano)
+		return
+
+func _toggle_escondido_cama():
 	escondido = !escondido
 	bloqueado = escondido
+	# Soltar objeto al esconderse
+	if escondido and objeto_en_mano != null:
+		_soltar_objeto()
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	if escondido:
-		# Tercera persona: atrás y arriba
 		tween.tween_property(camara, "position", Vector3(0, 1.8, 2.8), 0.5)
 		tween.parallel().tween_property(camara, "rotation", Vector3(deg_to_rad(-18), 0, 0), 0.5)
 	else:
 		tween.tween_property(camara, "position", posicion_normal, 0.5)
 		tween.parallel().tween_property(camara, "rotation", Vector3(0, 0, 0), 0.5)
 
-# Esconderse en closet: mismo efecto de tercera persona
 func _toggle_escondido_closet():
-	if not escondido and objeto_en_mano != null:
-		mostrar_mensaje_temporal("No puedes esconderte cargando algo", 2.0)
-		return
 	escondido = !escondido
 	bloqueado = escondido
+	# Soltar objeto al esconderse
+	if escondido and objeto_en_mano != null:
+		_soltar_objeto()
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	if escondido:
-		# Tercera persona igual que cama — misma experiencia visual
 		tween.tween_property(camara, "position", Vector3(0, 1.8, 2.8), 0.5)
 		tween.parallel().tween_property(camara, "rotation", Vector3(deg_to_rad(-18), 0, 0), 0.5)
 	else:
@@ -252,7 +238,6 @@ func _intentar_depositar() -> bool:
 	var nodos_cercanos = []
 	for grupo in ["generadores", "puertas_llave"]:
 		nodos_cercanos += get_tree().get_nodes_in_group(grupo)
-
 	for nodo in nodos_cercanos:
 		var dist = global_position.distance_to(nodo.global_position)
 		if dist < 2.5 and nodo.has_method("recibir_objeto"):
@@ -289,7 +274,6 @@ func _physics_process(delta):
 		return
 
 	var corriendo = Input.is_key_pressed(KEY_SHIFT) and puede_correr and stamina > 0
-
 	var vel_base = velocidad_con_carga if (objeto_en_mano != null and objeto_en_mano.es_pesado) else velocidad
 	var vel = vel_base * 1.6 if corriendo else vel_base
 
@@ -352,9 +336,25 @@ func morir():
 	muerto = true
 	bloqueado = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	# Silenciar todo el juego
+	for hijo in get_tree().get_nodes_in_group("enemigo"):
+		if hijo.has_node("detectarJugador"):
+			hijo.get_node("detectarJugador").stop()
+		if hijo.has_node("AudioMonstruo"):
+			hijo.get_node("AudioMonstruo").stop()
+	var nodo_fondo = get_tree().current_scene.get_node_or_null("sonidoFondo")
+	if nodo_fondo: nodo_fondo.stop()
 	_reproducir_cinematica_muerte()
 
 func _reproducir_cinematica_muerte():
+	# Silenciar loop del monstruo
+	for e in get_tree().get_nodes_in_group("enemigo"):
+		for nombre in ["detectarJugador", "AudioMonstruo"]:
+			var a = e.get_node_or_null(nombre)
+			if a: a.stop()
+	var fondo_nodo = get_tree().current_scene.get_node_or_null("sonidoFondo")
+	if fondo_nodo: fondo_nodo.stop()
+
 	var capa = CanvasLayer.new()
 	capa.layer = 10
 	add_child(capa)
@@ -364,10 +364,7 @@ func _reproducir_cinematica_muerte():
 	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
 	capa.add_child(fondo)
 
-	AudioServer.set_bus_volume_db(0, -80)
-
 	if cinematica_muerte == null:
-		print("ERROR: cinematica no cargada")
 		mostrar_menu_muerte()
 		return
 
@@ -376,21 +373,46 @@ func _reproducir_cinematica_muerte():
 	video.expand = true
 	video.set_anchors_preset(Control.PRESET_FULL_RECT)
 	capa.add_child(video)
-	video.play()
 
-	await video.finished
+	var audio = AudioStreamPlayer.new()
+	audio.stream = audio_muerte
+	capa.add_child(audio)
+
+	video.play()
+	audio.play()
+
+	# Usar audio como trigger — más confiable que video.finished
+	await audio.finished
+	if not is_inside_tree(): return
+	video.stop()
+	capa.queue_free()
+	await get_tree().process_frame
 	mostrar_menu_muerte()
-	AudioServer.set_bus_volume_db(0, 0)
 
 func mostrar_menu_muerte():
+	print("MOSTRANDO MENU MUERTE")
+	get_tree().paused = true
+	AudioServer.set_bus_volume_db(0, 0)
+
 	var menu = CanvasLayer.new()
 	menu.name = "MenuMuerte"
+	menu.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(menu)
 
-	var fondo = ColorRect.new()
-	fondo.color = Color(0, 0, 0, 0.85)
-	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
-	menu.add_child(fondo)
+	var video = VideoStreamPlayer.new()
+	video.stream = load("res://cinematic/MenuMuerte.ogv")
+	video.expand = true
+	video.set_anchors_preset(Control.PRESET_FULL_RECT)
+	video.process_mode = Node.PROCESS_MODE_ALWAYS
+	menu.add_child(video)
+	video.play()
+
+	var audio = AudioStreamPlayer.new()
+	audio.stream = load("res://sonidos/sonidoMenuMuerte.mp3")
+	audio.volume_db = 0.0
+	audio.process_mode = Node.PROCESS_MODE_ALWAYS
+	menu.add_child(audio)
+	audio.play()
 
 	var titulo = Label.new()
 	titulo.text = "HAS MUERTO"
@@ -405,13 +427,17 @@ func mostrar_menu_muerte():
 	btn_reiniciar.text = "REINICIAR"
 	btn_reiniciar.size = Vector2(300, 60)
 	btn_reiniciar.position = Vector2(get_viewport().size.x / 2 - 150, 330)
+	btn_reiniciar.process_mode = Node.PROCESS_MODE_ALWAYS
 	menu.add_child(btn_reiniciar)
-	btn_reiniciar.pressed.connect(func(): get_tree().reload_current_scene())
+	btn_reiniciar.pressed.connect(func():
+		get_tree().paused = false
+		get_tree().reload_current_scene())
 
 	var btn_salir = Button.new()
 	btn_salir.text = "SALIR"
 	btn_salir.size = Vector2(300, 60)
 	btn_salir.position = Vector2(get_viewport().size.x / 2 - 150, 410)
+	btn_salir.process_mode = Node.PROCESS_MODE_ALWAYS
 	menu.add_child(btn_salir)
 	btn_salir.pressed.connect(func(): get_tree().quit())
 
