@@ -7,14 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://brxjry1fxpe75" path="res://texturas/suelos/grassy_cobblestone_disp_1k.png" id="2_stwdm"]
 [ext_resource type="Texture2D" uid="uid://brwfwi01qtx4m" path="res://texturas/paredes/Concrete042B_1K-JPG_Roughness.jpg" id="3_aymwt"]
 [ext_resource type="Texture2D" uid="uid://bgd1hsefa75ni" path="res://texturas/suelos/grassy_cobblestone_mask_1k.png" id="3_ru7ok"]
-[ext_resource type="PackedScene" uid="uid://cjw4xw3h8aunp" path="res://modelos/horror_bed.glb" id="8_stwdm"]
-[ext_resource type="PackedScene" uid="uid://daqub7vpb8p3j" path="res://modelos/dirty_water_closet.glb" id="9_ru7ok"]
+[ext_resource type="PackedScene" uid="uid://cjw4xw3h8aunp" path="res://modelos/cama/horror_bed.glb" id="8_stwdm"]
+[ext_resource type="PackedScene" uid="uid://daqub7vpb8p3j" path="res://modelos/dirtyWater/dirty_water_closet.glb" id="9_ru7ok"]
 [ext_resource type="Script" uid="uid://dddteeuivck21" path="res://cama.gd" id="9_yylae"]
-[ext_resource type="PackedScene" uid="uid://csrknyohmrwju" path="res://modelos/door.glb" id="11_fw6i8"]
+[ext_resource type="PackedScene" uid="uid://csrknyohmrwju" path="res://modelos/door/door.glb" id="11_fw6i8"]
 [ext_resource type="AudioStream" uid="uid://df6yplih10qvl" path="res://sonidos/sonidoAmbiente.mp3" id="13_n7up6"]
 [ext_resource type="AudioStream" uid="uid://d2tfaq3h2lypi" path="res://sonidos/detectarJugador.mp3" id="14_uf16k"]
 [ext_resource type="AudioStream" uid="uid://bhs3aa834654x" path="res://sonidos/monstruo.mp3" id="15_s2qu8"]
-[ext_resource type="PackedScene" uid="uid://wxit7fpnjuyj" path="res://modelos/garbage_bin.glb" id="16_uf16k"]
+[ext_resource type="PackedScene" uid="uid://wxit7fpnjuyj" path="res://modelos/basura/garbage_bin.glb" id="16_uf16k"]
 [ext_resource type="Script" uid="uid://bamyi2y1v5gyi" path="res://script/puerta.gd" id="17_7qdvq"]
 [ext_resource type="PackedScene" uid="uid://xc2j10gglrut" path="res://modelos/puerta/old_door.glb" id="17_dl0jb"]
 [ext_resource type="PackedScene" uid="uid://c3tq0kiqol18o" path="res://modelos/enemigoNuevoMapa/overseer.glb" id="18_ixt30"]
@@ -31,7 +31,7 @@
 [ext_resource type="AudioStream" uid="uid://3dkbionmdbbf" path="res://sonidos/echar gas.mp3" id="24_1v433"]
 [ext_resource type="Script" uid="uid://drqa60612rgfw" path="res://script/puertaGenerador.gd" id="25_vlmk0"]
 [ext_resource type="Script" uid="uid://dk4gevpf40nex" path="res://script/gameManager.gd" id="28_3w3qa"]
-[ext_resource type="PackedScene" uid="uid://ctag4liky2qf6" path="res://modelos/old_vintage_wardrobe__gameready_pbr.glb" id="32_gsmyu"]
+[ext_resource type="PackedScene" uid="uid://ctag4liky2qf6" path="res://modelos/ropero/old_vintage_wardrobe__gameready_pbr.glb" id="32_gsmyu"]
 [ext_resource type="Script" uid="uid://dq5dhcsp3lwv3" path="res://script/closet.gd" id="33_14hn0"]
 [ext_resource type="PackedScene" uid="uid://cl3tjki405epd" path="res://modelos/sillaRuedas/re_wheelchair_horror_game_hospital.glb" id="34_diqh4"]
 [ext_resource type="PackedScene" uid="uid://bt1xgrsykxwwh" path="res://modelos/escombros/rubble_pile_-_photoscan_optimized.glb" id="35_2dbqe"]
@@ -43,6 +43,7 @@
 [ext_resource type="PackedScene" uid="uid://c6lekkhwwjxnq" path="res://modelos/electricidad/electric_box_44.glb" id="41_8ttia"]
 [ext_resource type="PackedScene" uid="uid://p4ji467gqahs" path="res://modelos/maderaTerror/old_kitchen_cabinets.glb" id="42_aajda"]
 [ext_resource type="PackedScene" uid="uid://dvhp5hi01javc" path="res://modelos/habitacionGalon2/old_kitchen_-_the_grandmas_kitchen..glb" id="43_0q5cl"]
+[ext_resource type="PackedScene" uid="uid://b0kcsnokbeil4" path="res://modelos/escalerasDeMano/uploads_files_4738726_Blender_stairs.fbx" id="44_kf46g"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tpx6v"]
 
@@ -147,10 +148,22 @@ size = Vector3(0.9511719, 1.6806641, 0.40942383)
 [sub_resource type="BoxShape3D" id="BoxShape3D_0q5cl"]
 size = Vector3(942.36426, 210.92963, 1945.947)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_kf46g"]
+size = Vector3(11.372986, 4.5825195, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ox2j"]
+size = Vector3(1.5302429, 4.5825195, 11.090759)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x30h8"]
+size = Vector3(1.5302429, 4.5825195, 5.7960625)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_of4ec"]
+size = Vector3(1.5302429, 4.5825195, 4.8253736)
+
 [node name="Node3D" type="Node3D" unique_id=2091514770]
 
 [node name="Jugador" type="CharacterBody3D" parent="." unique_id=906516204 groups=["jugador"]]
-transform = Transform3D(-0.03462042, 0, -0.99940044, 0, 1, 0, 0.99940044, 0, -0.03462042, 8.244994, 3, 28.262815)
+transform = Transform3D(-0.03462042, 0, -0.99940044, 0, 1, 0, 0.99940044, 0, -0.03462042, -3.5624304, 3, 0.82024956)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_2aibo")
@@ -398,6 +411,13 @@ collision_layer = 2
 size = Vector3(44.757996, 11, 1)
 material = SubResource("StandardMaterial3D_kh4y0")
 
+[node name="Pared25" type="CSGBox3D" parent="NavigationRegion3D" unique_id=958733548]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.80964, 2.0000005, -32.13719)
+use_collision = true
+collision_layer = 2
+size = Vector3(13.882416, 11, 1)
+material = SubResource("StandardMaterial3D_kh4y0")
+
 [node name="Pared6" type="CSGBox3D" parent="NavigationRegion3D" unique_id=940579643]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24442673, 6.0444326, -10.045837)
 use_collision = true
@@ -432,6 +452,24 @@ material = SubResource("StandardMaterial3D_kh4y0")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.093508, 2.0000005, 0)
 use_collision = true
 size = Vector3(1, 11, 20)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared15" type="CSGBox3D" parent="NavigationRegion3D" unique_id=536950091]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.093508, 2.0000005, 20.572193)
+use_collision = true
+size = Vector3(1, 11, 7.8930664)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared16" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1276244664]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.093508, 2.0000005, 9.742561)
+use_collision = true
+size = Vector3(1, 11, 7.8930664)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared18" type="CSGBox3D" parent="NavigationRegion3D" unique_id=2083277385]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.093508, 7.360836, 15.330599)
+use_collision = true
+size = Vector3(1, 1.6098633, 7.8930664)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared8" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1652960439]
@@ -507,6 +545,27 @@ collision_layer = 2
 size = Vector3(25.541504, 0.28878784, 12.800079)
 material = SubResource("StandardMaterial3D_kh4y0")
 
+[node name="Pared26" type="CSGBox3D" parent="NavigationRegion3D" unique_id=550304181]
+transform = Transform3D(-0.99938655, 0, 0.035021566, 0, 1, 0, -0.035021566, 0, -0.99938655, -7.801261, 7.373548, -33.782875)
+use_collision = true
+collision_layer = 2
+size = Vector3(11.989746, 0.28878784, 4.081192)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared27" type="CSGBox3D" parent="NavigationRegion3D" unique_id=418822718]
+transform = Transform3D(-0.99938655, 0, 0.035021566, 0, 1, 0, -0.035021566, 0, -0.99938655, -15.318177, 7.373548, -32.34447)
+use_collision = true
+collision_layer = 2
+size = Vector3(2.8884277, 0.28878784, 1.521553)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared28" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1372502857]
+transform = Transform3D(-0.99938655, 0, 0.035021566, 0, 1, 0, -0.035021566, 0, -0.99938655, -15.318177, 7.373548, -35.74301)
+use_collision = true
+collision_layer = 2
+size = Vector3(2.8884277, 0.28878784, 1.521553)
+material = SubResource("StandardMaterial3D_kh4y0")
+
 [node name="Pared23" type="CSGBox3D" parent="NavigationRegion3D" unique_id=270866983]
 transform = Transform3D(0.0031939782, 0, -0.99999505, 0, 1, 0, 0.99999505, 0, 0.0031939782, -16.381973, 2.017942, -10.023509)
 use_collision = true
@@ -519,6 +578,27 @@ transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0
 use_collision = true
 collision_layer = 2
 size = Vector3(1, 11, 73.39763)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared29" type="CSGBox3D" parent="NavigationRegion3D" unique_id=282546129]
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -16.19845, 11.117858, -32.472843)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 11, 8.016827)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared30" type="CSGBox3D" parent="NavigationRegion3D" unique_id=432670041]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -12.710928, 11.117858, -35.71617)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 11, 8.016827)
+material = SubResource("StandardMaterial3D_kh4y0")
+
+[node name="Pared31" type="CSGBox3D" parent="NavigationRegion3D" unique_id=983293065]
+transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, -12.710928, 16.168959, -31.812265)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 11, 8.016827)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Suelo" type="CSGBox3D" parent="NavigationRegion3D" unique_id=679380237]
@@ -549,36 +629,6 @@ transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 1.8008137, 0, 0)
 
 [node name="Sketchfab_model" parent="NavigationRegion3D/enemigo/Sketchfab_Scene" index="0" unique_id=1666931723]
 transform = Transform3D(-0.9982397, 0.059306454, 2.5923677e-09, 0, -4.3711385e-08, 0.99999994, 0.059306454, 0.9982397, 4.3634447e-08, -6.512111, 0, 0)
-
-[node name="Skeleton3D" parent="NavigationRegion3D/enemigo/Sketchfab_Scene/Sketchfab_model/79f45bb58c474f7584f64d782ba3085d_fbx/Object_2/RootNode/Model/Object_5" parent_id_path=PackedInt32Array(768025768, 1238928104) index="0" unique_id=1151634912]
-bones/2/position = Vector3(0.016679991, 0.32574165, 1.1085331)
-bones/2/rotation = Quaternion(-0.015853703, 7.5488714e-08, 1.1976798e-09, 0.9998744)
-bones/3/rotation = Quaternion(-0.0060430435, 3.509637e-12, 8.526513e-13, 0.99998176)
-bones/4/rotation = Quaternion(0.01842579, 9.464429e-12, 5.9117156e-12, 0.99983025)
-bones/5/rotation = Quaternion(0.0008748324, 0.0015282138, 0.010784097, 0.99994034)
-bones/6/rotation = Quaternion(-0.019684562, 0.006798574, -0.010657089, 0.99972636)
-bones/7/rotation = Quaternion(0.013300746, 3.2416355e-07, -1.3629347e-06, 0.99991155)
-bones/9/rotation = Quaternion(0.020747822, 0.006691109, -0.017514009, 0.99960893)
-bones/10/rotation = Quaternion(-0.043254867, -0.017574692, 0.020178584, 0.9987056)
-bones/11/rotation = Quaternion(0.015317527, -4.2872065e-07, -5.0325678e-05, 0.9998827)
-bones/13/rotation = Quaternion(-4.3368087e-19, 4.9303807e-32, -6.3047243e-30, 1)
-bones/14/rotation = Quaternion(-0.08316282, -1.6234903e-19, 2.1684041e-19, 0.99653596)
-bones/16/rotation = Quaternion(-0.055197388, 0.31855035, 0.42887878, 0.8435295)
-bones/18/rotation = Quaternion(-0.013640234, -1.1180835e-19, 1.6263033e-19, 0.999907)
-bones/20/rotation = Quaternion(-0.10580294, -0.23650974, -0.44008484, 0.859764)
-bones/24/rotation = Quaternion(0.019299163, 1.6669608e-18, 6.127775e-17, 0.99981374)
-bones/25/rotation = Quaternion(0.0055897087, 0.012276687, -0.010151595, 0.9998575)
-bones/26/rotation = Quaternion(-0.016852964, -0.020029016, -0.0032554406, 0.9996521)
-bones/27/rotation = Quaternion(0.008596636, 0.009308847, 0.0016254677, 0.99991846)
-bones/30/rotation = Quaternion(0.0031972942, -0.011680379, 0.008628866, 0.9998895)
-bones/31/rotation = Quaternion(-0.01700853, 0.020426057, 0.0039788294, 0.9996388)
-bones/32/rotation = Quaternion(0.010555376, -0.01563296, -0.0017671521, 0.99982053)
-bones/35/rotation = Quaternion(-0.0028553186, 0.009258429, 0.019885428, 0.9997553)
-bones/36/rotation = Quaternion(0.012554532, -0.008560318, -0.004417958, 0.9998748)
-bones/37/rotation = Quaternion(8.811867e-08, 0.04361933, 4.928006e-08, 0.9990483)
-bones/40/rotation = Quaternion(0.014084998, 0.16091761, 0.021332901, 0.9866368)
-bones/41/rotation = Quaternion(0.00013609331, -0.40692213, -0.0010000914, 0.9134623)
-bones/42/rotation = Quaternion(0.035596445, 0.24877696, -0.0059405174, 0.9678883)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="NavigationRegion3D/enemigo" unique_id=1884199118]
 path_desired_distance = 0.5
@@ -708,7 +758,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0057371557, 1.8311157, 3.5
 shape = SubResource("BoxShape3D_2dbqe")
 
 [node name="Node3D" type="Node3D" parent="." unique_id=1602021390]
-transform = Transform3D(-0.035036657, 0, -1.6796348, 0, 1.68, 0, 1.6796348, 0, -0.035036657, 4.8257456, 1.3929641, 16.329905)
+transform = Transform3D(-0.026347168, 0, -1.6888597, 0, 1.6537069, 0, 1.2630663, 0, -0.035229083, 3.2556744, 1.3929641, 13.906656)
 script = ExtResource("23_akw8o")
 
 [node name="puertaLlave" parent="Node3D" unique_id=118521491 instance=ExtResource("17_dl0jb")]
@@ -1178,6 +1228,7 @@ shape = SubResource("BoxShape3D_0q5cl")
 transform = Transform3D(0.001848333, 0, 0.00076398, 0, 0.002, 0, -0.00076398, 0, 0.001848333, -3.0159817, 1.5917029, -6.656621)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="maderaHorror3" unique_id=2024372666]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="maderaHorror3/StaticBody3D" unique_id=1619284923]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.279297, -137.02826, -159.03418)
@@ -1198,10 +1249,47 @@ transform = Transform3D(-1.1379901e-09, 0, 0.03184112, 0, 0.035914607, 0, -0.026
 [node name="scene kitchen sketchfab test 1_obj_cleaner_gles" parent="habitacionGalon2/Sketchfab_model" parent_id_path=PackedInt32Array(2123114156, 1866470395) index="0" unique_id=951515189]
 transform = Transform3D(0.9576719, 0, 0, 0, 1.0009097, 9.305782e-24, 0, -2.8951321e-24, 1, -374.34882, -129.97778, 0)
 
+[node name="Object_12" parent="habitacionGalon2/Sketchfab_model/scene kitchen sketchfab test 1_obj_cleaner_gles/Object_2" parent_id_path=PackedInt32Array(2123114156, 309173331) index="9" unique_id=730709022]
+transform = Transform3D(1, 0, 0, 3.7252903e-09, 1, 6.5140473e-24, -6.617445e-24, -2.8951321e-24, 1.0000002, 0, 0, 454.57236)
+
 [node name="SpotLight3D" type="SpotLight3D" parent="habitacionGalon2" unique_id=1013710205]
 transform = Transform3D(38.41104, 5.684342e-13, 2.7105054e-20, 0, -1.3727966e-06, 27.843822, 3.410605e-13, -31.405928, -1.5484208e-06, -65.39642, 193.00558, -62.228565)
 spot_range = 17.735
 script = ExtResource("38_mlnlh")
+
+[node name="SuperPonerColisionesAyuda" type="Node3D" parent="." unique_id=781906060]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.268365)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SuperPonerColisionesAyuda" unique_id=617110570]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SuperPonerColisionesAyuda/StaticBody3D" unique_id=95890107]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0728455, 1.7912598, 0)
+shape = SubResource("BoxShape3D_kf46g")
+
+[node name="SuperPonerColisionesAyuda2" type="Node3D" parent="." unique_id=972590520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.001748)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SuperPonerColisionesAyuda2" unique_id=1742535281]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SuperPonerColisionesAyuda2/StaticBody3D" unique_id=1687187398]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.337924, 1.7912598, 2.433013)
+shape = SubResource("BoxShape3D_0ox2j")
+
+[node name="SuperPonerColisionesAyuda3" type="Node3D" parent="." unique_id=2054395165]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.184703)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SuperPonerColisionesAyuda3" unique_id=1190954785]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SuperPonerColisionesAyuda3/StaticBody3D" unique_id=1300912239]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6236877, 1.7912598, 4.100213)
+shape = SubResource("BoxShape3D_x30h8")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="SuperPonerColisionesAyuda3/StaticBody3D" unique_id=1031180914]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.935112, 1.7912598, 4.100213)
+shape = SubResource("BoxShape3D_of4ec")
+
+[node name="escaleraMano" parent="." unique_id=609852174 instance=ExtResource("44_kf46g")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -15.442238, 4.7917795, -33.207695)
 
 [editable path="NavigationRegion3D/enemigo/Sketchfab_Scene"]
 [editable path="habitacionGalon2"]

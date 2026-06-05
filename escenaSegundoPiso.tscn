@@ -1,0 +1,142 @@
+[gd_scene format=3 uid="uid://da5pngky22i5n"]
+
+[ext_resource type="Texture2D" uid="uid://bmt7gk0wchvl0" path="res://texturas/suelos/grassy_cobblestone_diff_1k.jpg" id="1_edmdl"]
+[ext_resource type="Texture2D" uid="uid://brxjry1fxpe75" path="res://texturas/suelos/grassy_cobblestone_disp_1k.png" id="2_l5ke0"]
+[ext_resource type="Texture2D" uid="uid://bgd1hsefa75ni" path="res://texturas/suelos/grassy_cobblestone_mask_1k.png" id="3_vww2q"]
+[ext_resource type="PackedScene" uid="uid://b0kcsnokbeil4" path="res://modelos/escalerasDeMano/uploads_files_4738726_Blender_stairs.fbx" id="4_177x2"]
+[ext_resource type="Texture2D" uid="uid://dg3fkjla30d15" path="res://texturas/paredes/Concrete042B_1K-JPG_Color.jpg" id="5_mwrxe"]
+[ext_resource type="Texture2D" uid="uid://cr6sfo73ves4x" path="res://texturas/paredes/Concrete042B_1K-JPG_NormalGL.jpg" id="6_5ua32"]
+[ext_resource type="Texture2D" uid="uid://brwfwi01qtx4m" path="res://texturas/paredes/Concrete042B_1K-JPG_Roughness.jpg" id="7_mbbpb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8spky"]
+albedo_texture = ExtResource("1_edmdl")
+roughness_texture = ExtResource("3_vww2q")
+normal_enabled = true
+normal_texture = ExtResource("2_l5ke0")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_61pmr"]
+size = Vector3(22.291294, 1, 23.44588)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ny25s"]
+albedo_texture = ExtResource("5_mwrxe")
+roughness_texture = ExtResource("7_mbbpb")
+normal_enabled = true
+normal_texture = ExtResource("6_5ua32")
+
+[node name="Node3D" type="Node3D" unique_id=2113701928]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.52289677)
+
+[node name="Suelo" type="CSGBox3D" parent="." unique_id=135204431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.07794, 8.014798, 22.917622)
+use_collision = true
+collision_layer = 3
+size = Vector3(30.226154, -0.5, 41.58735)
+material = SubResource("StandardMaterial3D_8spky")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Suelo" unique_id=2026403718]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo/StaticBody3D" unique_id=744227486]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09165001, -0.48645782, -0.035983086)
+shape = SubResource("BoxShape3D_61pmr")
+
+[node name="Suelo3" type="CSGBox3D" parent="." unique_id=507740118]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8403807, 8.014798, -0.7625742)
+use_collision = true
+collision_layer = 3
+size = Vector3(9.063619, -0.5, 6.134617)
+material = SubResource("StandardMaterial3D_8spky")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Suelo3" unique_id=442639005]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo3/StaticBody3D" unique_id=1904134289]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09165001, -0.48645782, -0.035983086)
+shape = SubResource("BoxShape3D_61pmr")
+
+[node name="Suelo4" type="CSGBox3D" parent="." unique_id=1043823258]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9405575, 8.014798, -4.89808)
+use_collision = true
+collision_layer = 3
+size = Vector3(9.961095, -0.5, 6.134617)
+material = SubResource("StandardMaterial3D_8spky")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Suelo4" unique_id=1567533798]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo4/StaticBody3D" unique_id=387255498]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09165001, -0.48645782, -0.035983086)
+shape = SubResource("BoxShape3D_61pmr")
+
+[node name="Suelo5" type="CSGBox3D" parent="." unique_id=697654256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.8029785, 8.014798, -2.935091)
+use_collision = true
+collision_layer = 3
+size = Vector3(24.268105, -0.5, 10.060595)
+material = SubResource("StandardMaterial3D_8spky")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Suelo5" unique_id=1832796477]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo5/StaticBody3D" unique_id=310013079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09165001, -0.48645782, -0.035983086)
+shape = SubResource("BoxShape3D_61pmr")
+
+[node name="Suelo2" type="CSGBox3D" parent="." unique_id=1031302256]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.422382, 0.5081911, 11.128846)
+use_collision = true
+collision_layer = 3
+size = Vector3(23.485672, -0.5, 25.168768)
+material = SubResource("StandardMaterial3D_8spky")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Suelo2" unique_id=28856721]
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Suelo2/StaticBody3D" unique_id=262247674]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09165001, -0.48645782, -0.035983086)
+shape = SubResource("BoxShape3D_61pmr")
+
+[node name="escaleraMano" parent="." unique_id=609852174 instance=ExtResource("4_177x2")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.18079662, 4.7917795, 1.932827)
+
+[node name="Pared21" type="CSGBox3D" parent="." unique_id=1542376125]
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -1.5948151, 2.7893844, 10.39206)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 12.588745, 24.186565)
+material = SubResource("StandardMaterial3D_ny25s")
+
+[node name="Pared23" type="CSGBox3D" parent="." unique_id=50828101]
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -1.5948151, 2.7893844, -10.976111)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 12.588745, 24.186565)
+material = SubResource("StandardMaterial3D_ny25s")
+
+[node name="Pared24" type="CSGBox3D" parent="." unique_id=1598307714]
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -1.5948151, 14.913048, -10.976111)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 12.588745, 24.186565)
+material = SubResource("StandardMaterial3D_ny25s")
+
+[node name="Pared25" type="CSGBox3D" parent="." unique_id=1045867760]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12.992608, 2.7893844, -3.3822124)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 12.588745, 31.797506)
+material = SubResource("StandardMaterial3D_ny25s")
+
+[node name="Pared26" type="CSGBox3D" parent="." unique_id=2070754370]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 12.896783, 14.913048, -3.3822124)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 12.588745, 31.605856)
+material = SubResource("StandardMaterial3D_ny25s")
+
+[node name="Pared22" type="CSGBox3D" parent="." unique_id=1653749583]
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -1.5948151, 14.633253, 10.39206)
+use_collision = true
+collision_layer = 2
+size = Vector3(1, 12.588745, 24.186565)
+material = SubResource("StandardMaterial3D_ny25s")
