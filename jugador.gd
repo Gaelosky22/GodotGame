@@ -10,7 +10,8 @@ var gravedad = 9.8
 var sensibilidad_mouse = 0.002
 
 var cama_posicion = Vector3.ZERO
-
+var mirando_atras = false
+var rotacion_y_guardada = 0.0
 enum TipoEscondite { NINGUNO, CAMA, CLOSET }
 var tipo_escondite_cercano: TipoEscondite = TipoEscondite.NINGUNO
 
@@ -159,6 +160,14 @@ func _input(event):
 		camara.rotate_x(-event.relative.y * sensibilidad_mouse)
 		camara.rotation.x = clamp(camara.rotation.x, -1.2, 1.2)
 
+	if event is InputEventKey and not event.echo:
+		if event.keycode == KEY_Q:
+			if not escondido and not bloqueado:
+				if event.pressed:
+					_voltear_atras(true)
+				else:
+					_voltear_atras(false)
+
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_ESCAPE:
 			mostrar_menu_pausa()
@@ -169,9 +178,20 @@ func _input(event):
 			_interactuar_escondite()
 		elif event.keycode == KEY_R:
 			_interactuar_objeto()
+		elif event.keycode == KEY_SPACE:
+			print("Posición del jugador: ", global_position)
 
 # ─── INTERACCIÓN ───────────────────────────────────────────────────────────
 
+
+
+func _voltear_atras(activar: bool):
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	if activar:
+		tween.tween_property(camara, "rotation:y", deg_to_rad(175), 0.25)
+	else:
+		tween.tween_property(camara, "rotation:y", 0.0, 0.2)
 # E — escondites y puertas
 func _interactuar_escondite():
 	if puerta_cercana != null:
@@ -182,6 +202,16 @@ func _interactuar_escondite():
 		match tipo_escondite_cercano:
 			TipoEscondite.CAMA:   _toggle_escondido_cama()
 			TipoEscondite.CLOSET: _toggle_escondido_closet()
+
+func _toggle_voltear_atras():
+	mirando_atras = !mirando_atras
+	var tween = create_tween()
+	tween.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	if mirando_atras:
+		rotacion_y_guardada = rotation.y
+		tween.tween_property(camara, "rotation:y", deg_to_rad(175), 0.25)
+	else:
+		tween.tween_property(camara, "rotation:y", 0.0, 0.2)
 
 # R — recoger, soltar y depositar objetos
 func _interactuar_objeto():
