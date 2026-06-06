@@ -442,10 +442,23 @@ func _reproducir_cinematica_muerte():
 	video.play()
 	audio.play()
 
-	# Usar audio como trigger — más confiable que video.finished
-	await audio.finished
+	# Temporizador de seguridad: si el audio no se termina en 5 segundos, forzamos el menú
+	var tiempo_limite = 5.0
+	var timer = get_tree().create_timer(tiempo_limite)
+	var audio_terminado = false
+
+	# Conectar la señal finished del audio para saber cuándo acaba de verdad
+	if audio.stream:
+		audio.finished.connect(func(): audio_terminado = true)
+
+# Esperar a que el audio termine o a que pase el tiempo límite
+	while not audio_terminado and timer.time_left > 0:
+		await get_tree().process_frame
+
+	# Limpiar
 	if not is_inside_tree(): return
 	video.stop()
+	if audio.playing: audio.stop()
 	capa.queue_free()
 	await get_tree().process_frame
 	mostrar_menu_muerte()

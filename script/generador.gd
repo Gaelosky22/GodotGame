@@ -54,6 +54,10 @@ func _encender():
 	var gm = get_tree().get_root().find_child("GameManager", true, false)
 	if gm and gm.has_method("generador_encendido"):
 		gm.generador_encendido(id_generador)
+	# Cuando el generador se enciende (ej: en _on_interact o similar)
+	var enemigo = get_tree().get_first_node_in_group("enemigo")
+	if enemigo and enemigo.has_method("activar_generador"):
+		enemigo.activar_generador(1)  # 1 o 2 según el generador
 
 func _loop_audio_generador():
 	if not encendido or not is_inside_tree(): return

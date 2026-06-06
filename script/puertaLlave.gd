@@ -46,3 +46,6 @@ func _abrir():
 	var tween = create_tween()
 	tween.tween_property(self, "rotation:y", rotation.y + deg_to_rad(-90), 1.7)\
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_CUBIC)
+	var enemigo = get_tree().get_root().find_child("enemigo", true, false)
+	if enemigo and enemigo.has_method("notificar_objetivo_completado"):
+		enemigo.notificar_objetivo_completado()
