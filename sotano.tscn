@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://cllv16um7gya8"]
 
+[ext_resource type="Script" uid="uid://yla7ycoevik7" path="res://sotanoRaiz.gd" id="1_0ox2j"]
 [ext_resource type="Script" uid="uid://dqg8g28dccnpd" path="res://jugador.gd" id="1_2aibo"]
 [ext_resource type="Texture2D" uid="uid://bmt7gk0wchvl0" path="res://texturas/suelos/grassy_cobblestone_diff_1k.jpg" id="1_kh4y0"]
 [ext_resource type="Texture2D" uid="uid://dg3fkjla30d15" path="res://texturas/paredes/Concrete042B_1K-JPG_Color.jpg" id="1_vmnmg"]
@@ -161,6 +162,7 @@ size = Vector3(1.5302429, 4.5825195, 5.7960625)
 size = Vector3(1.5302429, 4.5825195, 4.8253736)
 
 [node name="Node3D" type="Node3D" unique_id=2091514770]
+script = ExtResource("1_0ox2j")
 
 [node name="Jugador" type="CharacterBody3D" parent="." unique_id=906516204 groups=["jugador"]]
 transform = Transform3D(-0.03462042, 0, -0.99940044, 0, 1, 0, 0.99940044, 0, -0.03462042, -3.5624304, 3, 0.82024956)

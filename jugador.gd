@@ -14,7 +14,7 @@ var mirando_atras = false
 var rotacion_y_guardada = 0.0
 enum TipoEscondite { NINGUNO, CAMA, CLOSET }
 var tipo_escondite_cercano: TipoEscondite = TipoEscondite.NINGUNO
-
+var cerca_de_escaleras = false
 var escondido = false
 var puede_esconderse = false
 var posicion_normal = Vector3(0, 0.7, 0)
@@ -143,8 +143,9 @@ func actualizar_hud():
 	elif escondido:
 		hint = "[E] Salir del escondite"
 
-	texto_interaccion.text = hint
-	texto_interaccion.visible = hint != ""
+	if not cerca_de_escaleras:
+		texto_interaccion.text = hint
+		texto_interaccion.visible = hint != ""
 
 	if objeto_en_mano != null:
 		label_objeto_en_mano.text = "Cargando: " + objeto_en_mano.nombre_display
@@ -180,6 +181,8 @@ func _input(event):
 			_interactuar_objeto()
 		elif event.keycode == KEY_SPACE:
 			print("Posición del jugador: ", global_position)
+		elif event.keycode == KEY_Z:      # ← ESTO AGREGAS
+			_usar_escaleras()
 
 # ─── INTERACCIÓN ───────────────────────────────────────────────────────────
 
@@ -212,6 +215,34 @@ func _toggle_voltear_atras():
 		tween.tween_property(camara, "rotation:y", deg_to_rad(175), 0.25)
 	else:
 		tween.tween_property(camara, "rotation:y", 0.0, 0.2)
+
+func _usar_escaleras():
+	if not cerca_de_escaleras:
+		return
+	
+	# Bloquear movimiento mientras anima
+	bloqueado = true
+	
+	# Crear el rect negro encima de todo
+	var fade = ColorRect.new()
+	fade.color = Color(0, 0, 0, 0)
+	fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var capa = CanvasLayer.new()
+	capa.layer = 99
+	add_child(capa)
+	capa.add_child(fade)
+	
+	# Fade a negro
+	var tween = create_tween()
+	tween.tween_property(fade, "color", Color(0, 0, 0, 1), 0.6)
+	await tween.finished
+	
+	# Aquí cambia la escena
+	var spawn = Vector3(-13.17891, 1.019905, -34.0269)
+	PlayerSpawn.set_spawn(spawn)
+	get_tree().change_scene_to_file("res://sotano.tscn")
 
 # R — recoger, soltar y depositar objetos
 func _interactuar_objeto():
@@ -517,3 +548,10 @@ func mostrar_menu_pausa():
 				get_tree().reload_current_scene())
 		else:
 			btn.pressed.connect(func(): get_tree().quit())
+
+func mostrar_mensaje_escalera(mostrar: bool):
+	if mostrar:
+		texto_interaccion.text = "[Z] Bajar al sótano"
+		texto_interaccion.visible = true
+	else:
+		texto_interaccion.visible = false
