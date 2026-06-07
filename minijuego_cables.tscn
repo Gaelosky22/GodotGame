@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://d0ascrgi8vk0y"]
+
+[ext_resource type="Script" uid="uid://bsqmctugbjf43" path="res://minijuego_cables.gd" id="1_3n8wo"]
+
+[node name="MinijuegoCables" type="Control" unique_id=1315646276]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_3n8wo")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=537833502]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -281.0
+offset_top = -178.0
+offset_right = 278.0
+offset_bottom = 177.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="Panel" type="Panel" parent="." unique_id=352429015]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel" unique_id=460230301]
+layout_mode = 0
+offset_left = 213.0
+offset_top = 16.0
+offset_right = 356.0
+offset_bottom = 39.0
+text = "Reconectar Cables"

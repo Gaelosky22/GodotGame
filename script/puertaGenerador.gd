@@ -4,27 +4,45 @@ var abierta = false
 
 func _ready():
 	add_to_group("puertas_generador")
+	if GameState.puerta_generador_abierta:
+		abierta = true
+		rotation.y += deg_to_rad(90)
 
 func interactuar():
-	
 	if abierta: return
-
-	var gm = get_tree().get_root().find_child("GameManager", true, false)
-	if gm and gm.generadores_encendidos >= 2:
+	var generadores_listos = GameState.generadores_encendidos.size()
+	
+	if generadores_listos >= 2 and GameState.cables_reparados:
 		_abrir()
 	else:
-		# Mostrar cuántos faltan
-		var faltan = 2 - gm.generadores_encendidos
 		var jugadores = get_tree().get_nodes_in_group("jugador")
-		if not jugadores.is_empty():
-			jugadores[0].mostrar_mensaje_temporal("Necesitas encender " + str(faltan) + " generador(es) más")
-
-func abrir_automatico():
-	# Llamado por GameManager cuando los 2 generadores están encendidos
-	_abrir()
+		if jugadores.is_empty(): return
+		var jugador = jugadores[0]
+		
+		if not GameState.cables_reparados and generadores_listos < 2:
+			jugador.mostrar_mensaje_temporal("Necesitas encender %d generador(es) más y reparar los cables" % (2 - generadores_listos))
+		elif not GameState.cables_reparados:
+			jugador.mostrar_mensaje_temporal("Necesitas reparar los cables del primer piso")
+		else:
+			jugador.mostrar_mensaje_temporal("Necesitas encender %d generador(es) más" % (2 - generadores_listos))
 
 func _abrir():
 	abierta = true
+	GameState.marcar_puerta_generador()
+	MisionHUD.actualizar()
+	# Fade a negro y cambiar escena
+	var jugador = get_tree().get_first_node_in_group("jugador")
+	if jugador == null: return
+	jugador.bloqueado = true
+	var fade = ColorRect.new()
+	fade.color = Color(0, 0, 0, 0)
+	fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var capa = CanvasLayer.new()
+	capa.layer = 99
+	jugador.add_child(capa)
+	capa.add_child(fade)
 	var tween = create_tween()
-	tween.tween_property(self, "rotation:y", rotation.y + deg_to_rad(90), 1.0)
-	print("¡Mega puerta abierta!")
+	tween.tween_property(fade, "color", Color(0, 0, 0, 1), 0.8)
+	await tween.finished
+	get_tree().change_scene_to_file("res://escenaBosque.tscn")

@@ -13,6 +13,12 @@ var cargando = false
 
 func _ready():
 	add_to_group("generadores")
+	if GameState.generador_fue_encendido(name):
+		tiene_gasolina = true
+		encendido = true
+		if audio_generador:
+			audio_generador.volume_db = -18.0
+			_loop_audio_generador()
 
 func recibir_objeto(objeto) -> bool:
 	if encendido:
@@ -25,6 +31,8 @@ func recibir_objeto(objeto) -> bool:
 
 	# Iniciar carga
 	cargando = true
+	GameState.marcar_galon(objeto.name)  # ← agrega esto
+
 	objeto.queue_free()
 
 	if audio_echar_gas:
@@ -44,6 +52,9 @@ func _encender():
 	tiene_gasolina = true
 	encendido = true
 	cargando = false
+	GameState.marcar_generador(name)  # ← agrega esto
+	MisionHUD.actualizar()
+
 	_mostrar_mensaje("¡Generador activado!")
 	print("Generador ", id_generador, " encendido")
 

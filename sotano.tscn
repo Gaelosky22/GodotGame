@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://brxjry1fxpe75" path="res://texturas/suelos/grassy_cobblestone_disp_1k.png" id="2_stwdm"]
 [ext_resource type="Texture2D" uid="uid://brwfwi01qtx4m" path="res://texturas/paredes/Concrete042B_1K-JPG_Roughness.jpg" id="3_aymwt"]
 [ext_resource type="Texture2D" uid="uid://bgd1hsefa75ni" path="res://texturas/suelos/grassy_cobblestone_mask_1k.png" id="3_ru7ok"]
+[ext_resource type="PackedScene" uid="uid://bs5no6oob5y8c" path="res://escenaTetrica.tscn" id="3_st1q1"]
 [ext_resource type="PackedScene" uid="uid://cjw4xw3h8aunp" path="res://modelos/cama/horror_bed.glb" id="8_stwdm"]
 [ext_resource type="PackedScene" uid="uid://daqub7vpb8p3j" path="res://modelos/dirtyWater/dirty_water_closet.glb" id="9_ru7ok"]
 [ext_resource type="Script" uid="uid://dddteeuivck21" path="res://cama.gd" id="9_yylae"]
@@ -46,12 +47,14 @@
 [ext_resource type="PackedScene" uid="uid://dvhp5hi01javc" path="res://modelos/habitacionGalon2/old_kitchen_-_the_grandmas_kitchen..glb" id="43_0q5cl"]
 [ext_resource type="PackedScene" uid="uid://b0kcsnokbeil4" path="res://modelos/escalerasDeMano/uploads_files_4738726_Blender_stairs.fbx" id="44_kf46g"]
 [ext_resource type="PackedScene" uid="uid://c41j7esovk0bl" path="res://modelos/viejaScreamer/terrifying_hooded_horror_woman.glb" id="45_0ox2j"]
+[ext_resource type="Script" uid="uid://w8e1ukyn75lt" path="res://script/escenaTeletransporte2a1.gd" id="46_nj2oe"]
 [ext_resource type="Script" uid="uid://dowjsfknmf5fk" path="res://script/viejita.gd" id="46_of4ec"]
 [ext_resource type="AudioStream" uid="uid://dh2d6414em5q" path="res://sonidosOrganizados/AudiosViejita/jumpscareVejita.mp3" id="46_x30h8"]
+[ext_resource type="Script" uid="uid://dxnafv2f5j4n0" path="res://areaViejita.gd" id="49_wqkm6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tpx6v"]
 
-[sub_resource type="Environment" id="Environment_tpx6v"]
+[sub_resource type="Environment" id="Environment_st1q1"]
 ambient_light_source = 2
 ambient_light_color = Color(0.20027253, 0, 0.23216501, 1)
 ambient_light_energy = 0.3
@@ -164,6 +167,12 @@ size = Vector3(1.5302429, 4.5825195, 5.7960625)
 [sub_resource type="BoxShape3D" id="BoxShape3D_of4ec"]
 size = Vector3(1.5302429, 4.5825195, 4.8253736)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_wqkm6"]
+size = Vector3(6.555725, 8.600586, 6.7094727)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nj2oe"]
+size = Vector3(1, 1.861206, 1.2636719)
+
 [node name="Node3D" type="Node3D" unique_id=2091514770]
 script = ExtResource("1_0ox2j")
 
@@ -184,8 +193,8 @@ light_energy = 2.0
 spot_range = 32.047
 spot_angle = 30.23
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=938561916]
-environment = SubResource("Environment_tpx6v")
+[node name="WorldEnvironment" parent="." unique_id=92203313 instance=ExtResource("3_st1q1")]
+environment = SubResource("Environment_st1q1")
 
 [node name="escalon1" type="CSGBox3D" parent="." unique_id=1712565244]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.25008, -0.3662157, 0.09448242)
@@ -573,7 +582,7 @@ size = Vector3(1, 11, 12.800079)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared21" type="CSGBox3D" parent="NavigationRegion3D" unique_id=793103224]
-transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -16.103167, 1.9950118, 0.60214996)
+transform = Transform3D(-0.9999958, 0, -0.002914697, 0, 1, 0, 0.002914697, 0, -0.9999958, -16.113234, 2.0187213, 0.602787)
 use_collision = true
 size = Vector3(1, 11, 73.39763)
 material = SubResource("StandardMaterial3D_kh4y0")
@@ -623,7 +632,7 @@ shape = SubResource("BoxShape3D_fu8n0")
 [node name="Sketchfab_Scene" parent="NavigationRegion3D/enemigo" unique_id=768025768 instance=ExtResource("18_ixt30")]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 1.8008137, 0, 0)
 
-[node name="Sketchfab_model" parent="NavigationRegion3D/enemigo/Sketchfab_Scene" index="0" unique_id=2046319812]
+[node name="Sketchfab_model" parent="NavigationRegion3D/enemigo/Sketchfab_Scene" index="0" unique_id=1666931723]
 transform = Transform3D(-0.9982397, 0.059306454, 2.5923677e-09, 0, -4.3711385e-08, 0.99999994, 0.059306454, 0.9982397, 4.3634447e-08, -6.512111, 0, 0)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="NavigationRegion3D/enemigo" unique_id=1884199118]
@@ -1243,10 +1252,10 @@ shape = SubResource("BoxShape3D_0q5cl")
 [node name="habitacionGalon2" parent="." unique_id=2123114156 instance=ExtResource("43_0q5cl")]
 transform = Transform3D(-1.1379901e-09, 0, 0.03184112, 0, 0.035914607, 0, -0.026034178, 0, -1.3918197e-09, -0.2492342, -0.62000704, 14.233948)
 
-[node name="scene kitchen sketchfab test 1_obj_cleaner_gles" parent="habitacionGalon2/Sketchfab_model" parent_id_path=PackedInt32Array(2123114156, 1018310274) index="0" unique_id=760438201]
+[node name="scene kitchen sketchfab test 1_obj_cleaner_gles" parent="habitacionGalon2/Sketchfab_model" parent_id_path=PackedInt32Array(2123114156, 1866470395) index="0" unique_id=951515189]
 transform = Transform3D(0.9576719, 0, 0, 0, 1.0009097, 9.305782e-24, 0, -2.8951321e-24, 1, -374.34882, -129.97778, 0)
 
-[node name="Object_12" parent="habitacionGalon2/Sketchfab_model/scene kitchen sketchfab test 1_obj_cleaner_gles/Object_2" parent_id_path=PackedInt32Array(2123114156, 612342970) index="9" unique_id=453538185]
+[node name="Object_12" parent="habitacionGalon2/Sketchfab_model/scene kitchen sketchfab test 1_obj_cleaner_gles/Object_2" parent_id_path=PackedInt32Array(2123114156, 309173331) index="9" unique_id=730709022]
 transform = Transform3D(1, 0, 0, 3.7252903e-09, 1, 6.5140473e-24, -6.617445e-24, -2.8951321e-24, 1.0000002, 0, 0, 454.57236)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="habitacionGalon2" unique_id=1013710205]
@@ -1288,11 +1297,21 @@ shape = SubResource("BoxShape3D_of4ec")
 [node name="escaleraMano" parent="." unique_id=609852174 instance=ExtResource("44_kf46g")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -15.442238, 4.7917795, -33.207695)
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="escaleraMano" unique_id=127452835]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -12.021149, -2.3776016)
+
+[node name="Area3D" type="Area3D" parent="escaleraMano/MeshInstance3D" unique_id=1350784895]
+script = ExtResource("46_nj2oe")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="escaleraMano/MeshInstance3D/Area3D" unique_id=1660672712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7778625, 3.800293, 0.45874786)
+shape = SubResource("BoxShape3D_wqkm6")
+
 [node name="viejita" parent="." unique_id=1392940706 instance=ExtResource("45_0ox2j")]
 transform = Transform3D(0.017594391, 0, 1.699909, 0, 1.7, 0, -1.699909, 0, 0.017594391, -14.368614, -0.25659108, -33.841675)
 script = ExtResource("46_of4ec")
 
-[node name="Skeleton3D" parent="viejita/Sketchfab_model/root/GLTF_SceneRootNode/Armature_25/GLTF_created_0" parent_id_path=PackedInt32Array(1392940706, 670105332) index="0" unique_id=1316781458]
+[node name="Skeleton3D" parent="viejita/Sketchfab_model/root/GLTF_SceneRootNode/Armature_25/GLTF_created_0" parent_id_path=PackedInt32Array(1392940706, 232775457) index="0" unique_id=1024227144]
 bones/1/position = Vector3(3.158702, 87.911934, 10.863287)
 bones/1/rotation = Quaternion(0.3822314, -0.18568324, -0.118307024, 0.89745444)
 bones/2/rotation = Quaternion(0.67722255, 0.1012162, -0.08376163, 0.72395366)
@@ -1325,11 +1344,20 @@ bones/21/rotation = Quaternion(-0.007152397, -0.014608613, 0.08701602, 0.9960741
 bones/22/position = Vector3(-9.159603e-07, 6.817175, 1.2097397e-05)
 bones/22/rotation = Quaternion(0.16722561, -0.064317554, 0.00094022596, 0.98381805)
 
-[node name="AnimationPlayer" parent="viejita" index="1" unique_id=781573199]
+[node name="AnimationPlayer" parent="viejita" index="1" unique_id=932160742]
 speed_scale = 1.5
 
 [node name="AudioJumpscare" type="AudioStreamPlayer3D" parent="viejita" unique_id=1110091254]
 stream = ExtResource("46_x30h8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="viejita" unique_id=652251640]
+
+[node name="Area3D" type="Area3D" parent="viejita/MeshInstance3D" unique_id=2105236717]
+script = ExtResource("49_wqkm6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="viejita/MeshInstance3D/Area3D" unique_id=1004658825]
+transform = Transform3D(0.9997528, 0, 0.022233661, 0, 0.9999965, 0, -0.022233661, 0, 0.9997528, -5.722046e-06, 0.43060273, 0.13183594)
+shape = SubResource("BoxShape3D_nj2oe")
 
 [editable path="NavigationRegion3D/enemigo/Sketchfab_Scene"]
 [editable path="habitacionGalon2"]

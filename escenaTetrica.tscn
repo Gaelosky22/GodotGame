@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bs5no6oob5y8c"]
+
+[sub_resource type="Environment" id="Environment_tpx6v"]
+ambient_light_source = 2
+ambient_light_color = Color(0.20027253, 0, 0.23216501, 1)
+ambient_light_energy = 0.3
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=92203313]
+environment = SubResource("Environment_tpx6v")

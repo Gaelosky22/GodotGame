@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://brd2l54mu7w27"]
+
+[ext_resource type="PackedScene" uid="uid://br7kv684mxe6s" path="res://modelos/mapaPostCreditos/light-map.glb" id="1_54rvp"]
+[ext_resource type="Script" uid="uid://dqg8g28dccnpd" path="res://jugador.gd" id="2_s33rp"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s33rp"]
+size = Vector3(9.182556, 0.39453125, 10.099609)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tg2jh"]
+
+[node name="Node3D" type="Node3D" unique_id=1585916281]
+
+[node name="Sketchfab_Scene" parent="." unique_id=770517377 instance=ExtResource("1_54rvp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1633724, 0, 0.057922125)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene" unique_id=691608498]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D" unique_id=142049140]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.23886096, -0.30273438, -0.35058594)
+shape = SubResource("BoxShape3D_s33rp")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D" unique_id=1778590696]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.23886096, -0.30273438, 3.7198143)
+shape = SubResource("BoxShape3D_s33rp")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D" unique_id=471084605]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.23886096, -0.30273438, -4.5371313)
+shape = SubResource("BoxShape3D_s33rp")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D" unique_id=453791061]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, 3.9919348, -0.30273438, -0.49489427)
+shape = SubResource("BoxShape3D_s33rp")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D" unique_id=993925281]
+transform = Transform3D(-4.371139e-08, 1, -4.371139e-08, 0, -4.371139e-08, -1, -1, -4.371139e-08, 1.9106855e-15, -4.3444247, -0.30273438, -0.49489427)
+shape = SubResource("BoxShape3D_s33rp")
+
+[node name="Jugador" type="CharacterBody3D" parent="Sketchfab_Scene" unique_id=428149256 groups=["jugador"]]
+transform = Transform3D(-0.03462042, 0, -0.99940044, 0, 1, 0, 0.99940044, 0, -0.03462042, -1.5302233, 3, -0.13126469)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("2_s33rp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Jugador" unique_id=99496587]
+shape = SubResource("CapsuleShape3D_tg2jh")
+
+[node name="Camera3D" type="Camera3D" parent="Sketchfab_Scene/Jugador" unique_id=873684338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Sketchfab_Scene/Jugador/Camera3D" unique_id=1022382367]
+light_energy = 2.0
+spot_range = 32.047
+spot_angle = 30.23

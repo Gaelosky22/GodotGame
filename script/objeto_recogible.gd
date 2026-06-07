@@ -7,6 +7,12 @@ var posicion_original: Vector3
 var rotacion_original: Vector3
 
 func _ready():
+	if nombre_display.to_lower().contains("llave") and GameState.llave_recogida:
+		queue_free()
+		return
+	if GameState.galon_fue_recogido(name):
+		queue_free()
+		return
 	add_to_group("objetos_recogibles")
 	posicion_original = global_position
 	rotacion_original = rotation

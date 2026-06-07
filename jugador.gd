@@ -143,7 +143,7 @@ func actualizar_hud():
 	elif escondido:
 		hint = "[E] Salir del escondite"
 
-	if not cerca_de_escaleras:
+	if not cerca_de_escaleras and not cerca_de_cableado:
 		texto_interaccion.text = hint
 		texto_interaccion.visible = hint != ""
 
@@ -154,8 +154,14 @@ func actualizar_hud():
 		label_objeto_en_mano.visible = false
 
 # ─── INPUT ─────────────────────────────────────────────────────────────────
-
+var cerca_de_cableado = false
 func _input(event):
+	if bloqueado:
+		if event is InputEventKey and event.pressed and not event.echo:
+			if event.keycode == KEY_E and escondido:
+				_interactuar_escondite()
+		return
+
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * sensibilidad_mouse)
 		camara.rotate_x(-event.relative.y * sensibilidad_mouse)
@@ -181,8 +187,10 @@ func _input(event):
 			_interactuar_objeto()
 		elif event.keycode == KEY_SPACE:
 			print("Posición del jugador: ", global_position)
-		elif event.keycode == KEY_Z:      # ← ESTO AGREGAS
+		elif event.keycode == KEY_Z:
 			_usar_escaleras()
+		elif event.keycode == KEY_C:
+			pass
 
 # ─── INTERACCIÓN ───────────────────────────────────────────────────────────
 
@@ -219,30 +227,41 @@ func _toggle_voltear_atras():
 func _usar_escaleras():
 	if not cerca_de_escaleras:
 		return
-	
-	# Bloquear movimiento mientras anima
+
 	bloqueado = true
-	
-	# Crear el rect negro encima de todo
+
+	# Fade a negro
 	var fade = ColorRect.new()
 	fade.color = Color(0, 0, 0, 0)
 	fade.set_anchors_preset(Control.PRESET_FULL_RECT)
 	fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	
+
 	var capa = CanvasLayer.new()
 	capa.layer = 99
 	add_child(capa)
 	capa.add_child(fade)
-	
-	# Fade a negro
+
 	var tween = create_tween()
 	tween.tween_property(fade, "color", Color(0, 0, 0, 1), 0.6)
 	await tween.finished
-	
-	# Aquí cambia la escena
-	var spawn = Vector3(-13.17891, 1.019905, -34.0269)
-	PlayerSpawn.set_spawn(spawn)
-	get_tree().change_scene_to_file("res://sotano.tscn")
+
+	# Detectar escena actual por archivo
+	var ruta = get_tree().current_scene.scene_file_path
+
+	print("Escena actual:", ruta)
+
+	if ruta.ends_with("escenaSegundoPiso.tscn"):
+		PlayerSpawn.set_spawn(Vector3(-13.17891, 1.019905, -34.0269))
+		get_tree().change_scene_to_file("res://sotano.tscn")
+
+	elif ruta.ends_with("sotano.tscn"):
+		PlayerSpawn.set_spawn(Vector3(0.954108, 9.765799, 5.41836))
+		get_tree().change_scene_to_file("res://escenaSegundoPiso.tscn")
+
+	else:
+		print("ERROR: Escena no reconocida")
+		bloqueado = false
+		capa.queue_free()
 
 # R — recoger, soltar y depositar objetos
 func _interactuar_objeto():
@@ -449,6 +468,7 @@ func _reproducir_cinematica_muerte():
 
 	# Conectar la señal finished del audio para saber cuándo acaba de verdad
 	if audio.stream:
+		@warning_ignore("confusable_capture_reassignment")
 		audio.finished.connect(func(): audio_terminado = true)
 
 # Esperar a que el audio termine o a que pase el tiempo límite
@@ -564,7 +584,13 @@ func mostrar_menu_pausa():
 
 func mostrar_mensaje_escalera(mostrar: bool):
 	if mostrar:
-		texto_interaccion.text = "[Z] Bajar al sótano"
+		var ruta = get_tree().current_scene.scene_file_path
+
+		if ruta.ends_with("sotano.tscn"):
+			texto_interaccion.text = "[Z] Subir al segundo piso"
+		else:
+			texto_interaccion.text = "[Z] Bajar al sótano"
+
 		texto_interaccion.visible = true
 	else:
 		texto_interaccion.visible = false

@@ -4,7 +4,11 @@ var abierta = false
 var jugador_ref = null
 
 func _ready():
+	
 	add_to_group("puertas_llave")
+	if GameState.puerta_llave_abierta:
+		abierta = true
+		rotation.y += deg_to_rad(-90)
 	var area = get_node_or_null("MeshInstance3D/Area3D")
 	if area == null:
 		push_error("puertaLlave: no se encontró MeshInstance3D/Area3D")
@@ -39,6 +43,7 @@ func interactuar():
 
 func _abrir():
 	abierta = true
+	GameState.marcar_puerta_llave()
 	var llave = jugador_ref.objeto_en_mano
 	jugador_ref.objeto_en_mano = null
 	llave.queue_free()
