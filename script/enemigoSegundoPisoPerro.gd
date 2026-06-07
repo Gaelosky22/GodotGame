@@ -70,7 +70,7 @@ func _aparecer():
 	var anims = ["thc4_arma|st_idle_battle", "thc4_arma|st_idle_howl", "thc4_arma|st_idle"]
 	animacion.play(anims[randi_range(0, anims.size() - 1)])
 	
-	timer_desaparicion.wait_time = 2.5
+	timer_desaparicion.wait_time = 1.2
 	timer_desaparicion.start()
 	
 	set_process(true)

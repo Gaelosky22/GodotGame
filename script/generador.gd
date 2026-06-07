@@ -47,28 +47,20 @@ func recibir_objeto(objeto) -> bool:
 
 	_encender()
 	return true
-
 func _encender():
 	tiene_gasolina = true
 	encendido = true
 	cargando = false
-	GameState.marcar_generador(name)  # ← agrega esto
+	GameState.marcar_generador(name)
 	MisionHUD.actualizar()
-
 	_mostrar_mensaje("¡Generador activado!")
 	print("Generador ", id_generador, " encendido")
-
 	if audio_generador:
-		audio_generador.volume_db = -18.0  # volumen bajo
+		audio_generador.volume_db = -18.0
 		_loop_audio_generador()
-
-	var gm = get_tree().get_root().find_child("GameManager", true, false)
-	if gm and gm.has_method("generador_encendido"):
-		gm.generador_encendido(id_generador)
-	# Cuando el generador se enciende (ej: en _on_interact o similar)
 	var enemigo = get_tree().get_first_node_in_group("enemigo")
 	if enemigo and enemigo.has_method("activar_generador"):
-		enemigo.activar_generador(1)  # 1 o 2 según el generador
+		enemigo.activar_generador(id_generador)
 
 func _loop_audio_generador():
 	if not encendido or not is_inside_tree(): return

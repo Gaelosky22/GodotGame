@@ -39,7 +39,7 @@ func interactuar():
 	if jugador_ref.objeto_en_mano != null and jugador_ref.objeto_en_mano.nombre_display.to_lower().contains("llave"):
 		_abrir()
 	else:
-		jugador_ref.mostrar_mensaje_temporal("Necesitas la llave para abrir esta puerta", 2.5)
+		jugador_ref.mostrar_mensaje_temporal("No se puede abrir, falta algo...", 3.0)
 
 func _abrir():
 	abierta = true

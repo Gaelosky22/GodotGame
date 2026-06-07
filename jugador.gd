@@ -12,7 +12,7 @@ var sensibilidad_mouse = 0.002
 var cama_posicion = Vector3.ZERO
 var mirando_atras = false
 var rotacion_y_guardada = 0.0
-enum TipoEscondite { NINGUNO, CAMA, CLOSET }
+enum TipoEscondite { NINGUNO, CAMA, CLOSET, BASURA }
 var tipo_escondite_cercano: TipoEscondite = TipoEscondite.NINGUNO
 var cerca_de_escaleras = false
 var escondido = false
@@ -111,6 +111,7 @@ func crear_hud():
 	overlay_dano.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay_dano.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(overlay_dano)
+var mostrando_mensaje = false
 
 func actualizar_hud():
 	var barra = hud.get_node("BarraStamina")
@@ -140,10 +141,12 @@ func actualizar_hud():
 		match tipo_escondite_cercano:
 			TipoEscondite.CAMA:   hint = "[E] Esconderse (cama)"
 			TipoEscondite.CLOSET: hint = "[E] Esconderse (closet)"
+			TipoEscondite.BASURA: hint = "[E] Esconderse (basura)"
+
 	elif escondido:
 		hint = "[E] Salir del escondite"
 
-	if not cerca_de_escaleras and not cerca_de_cableado:
+	if not cerca_de_escaleras and not cerca_de_cableado and not mostrando_mensaje:
 		texto_interaccion.text = hint
 		texto_interaccion.visible = hint != ""
 
@@ -194,6 +197,7 @@ func _input(event):
 
 # ─── INTERACCIÓN ───────────────────────────────────────────────────────────
 
+var movimiento_bloqueado = false
 
 
 func _voltear_atras(activar: bool):
@@ -213,6 +217,7 @@ func _interactuar_escondite():
 		match tipo_escondite_cercano:
 			TipoEscondite.CAMA:   _toggle_escondido_cama()
 			TipoEscondite.CLOSET: _toggle_escondido_closet()
+			TipoEscondite.BASURA: _toggle_escondido_closet()
 
 func _toggle_voltear_atras():
 	mirando_atras = !mirando_atras
@@ -277,7 +282,7 @@ func _interactuar_objeto():
 
 func _toggle_escondido_cama():
 	escondido = !escondido
-	bloqueado = escondido
+	movimiento_bloqueado = escondido
 	# Soltar objeto al esconderse
 	if escondido and objeto_en_mano != null:
 		_soltar_objeto()
@@ -292,7 +297,7 @@ func _toggle_escondido_cama():
 
 func _toggle_escondido_closet():
 	escondido = !escondido
-	bloqueado = escondido
+	movimiento_bloqueado = escondido
 	# Soltar objeto al esconderse
 	if escondido and objeto_en_mano != null:
 		_soltar_objeto()
@@ -335,11 +340,13 @@ func limpiar_objeto_cercano(obj):
 		objeto_cercano = null
 
 func mostrar_mensaje_temporal(texto: String, duracion: float = 3.0):
+	mostrando_mensaje = true
 	texto_interaccion.text = texto
 	texto_interaccion.visible = true
 	await get_tree().create_timer(duracion).timeout
 	if is_inside_tree():
 		texto_interaccion.visible = false
+	mostrando_mensaje = false
 
 # ─── FÍSICA ────────────────────────────────────────────────────────────────
 
@@ -347,7 +354,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravedad * delta
 
-	if bloqueado:
+	if bloqueado or movimiento_bloqueado:
 		velocity.x = 0
 		velocity.z = 0
 		move_and_slide()

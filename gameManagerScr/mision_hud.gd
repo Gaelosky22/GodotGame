@@ -6,12 +6,12 @@ var panel: PanelContainer
 var lista: VBoxContainer
 
 func _ready():
-	layer = 10
+	layer = 35
 	_construir_panel()
 
 func _construir_panel():
 	panel = PanelContainer.new()
-	panel.position = Vector2(20, 20)
+	panel.position = Vector2(20, 50)
 	panel.custom_minimum_size = Vector2(220, 0)
 	panel.visible = false
 	add_child(panel)
@@ -22,7 +22,7 @@ func _construir_panel():
 
 	var titulo = Label.new()
 	titulo.text = "Misiones"
-	titulo.add_theme_font_size_override("font_size", 16)
+	titulo.add_theme_font_size_override("font_size", 24)
 	titulo.add_theme_color_override("font_color", Color(1, 0.85, 0.2))
 	vbox.add_child(titulo)
 
@@ -48,7 +48,7 @@ func _actualizar_lista():
 func _agregar_seccion(texto: String):
 	var label = Label.new()
 	label.text = texto
-	label.add_theme_font_size_override("font_size", 13)
+	label.add_theme_font_size_override("font_size", 20)
 	label.add_theme_color_override("font_color", Color(1, 0.85, 0.2, 0.8))
 	lista.add_child(label)
 
