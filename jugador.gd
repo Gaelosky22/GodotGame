@@ -4,7 +4,7 @@ var golpes = 0
 var golpes_maximos = 3
 var muerto = false
 
-var velocidad = 5.0
+var velocidad = 4.8
 var velocidad_con_carga = 2.8
 var gravedad = 9.8
 var sensibilidad_mouse = 0.002
@@ -362,6 +362,7 @@ func _physics_process(delta):
 
 	var corriendo = Input.is_key_pressed(KEY_SHIFT) and puede_correr and stamina > 0
 	var vel_base = velocidad_con_carga if (objeto_en_mano != null and objeto_en_mano.es_pesado) else velocidad
+	@warning_ignore("incompatible_ternary")
 	var vel = vel_base * 1.6 if corriendo else vel_base
 
 	if corriendo:
@@ -417,6 +418,20 @@ func recibir_golpe():
 		tween.tween_property(overlay_dano, "color", Color(1, 0, 0, 0.0), 0.35)
 	if golpes >= golpes_maximos:
 		morir()
+	else:
+		_adrenalina()  # ← agrega esto
+
+func _adrenalina():
+	mostrar_mensaje_temporal("¡Adrenalina activada!", 2.0)
+	var stamina_original = stamina_maxima
+	puede_correr = true
+	stamina = stamina_maxima
+	# Desactivar gasto de stamina por 3 segundos
+	var gasto_original = gasto_stamina
+	gasto_stamina = 0.0
+	await get_tree().create_timer(3.0).timeout
+	if is_inside_tree():
+		gasto_stamina = gasto_original
 
 func morir():
 	if muerto: return
@@ -532,6 +547,14 @@ func mostrar_menu_muerte():
 	menu.add_child(btn_reiniciar)
 	btn_reiniciar.pressed.connect(func():
 		get_tree().paused = false
+		# Si estamos en el segundo piso, resetear cables y mover enemigo
+		var ruta = get_tree().current_scene.scene_file_path
+		if ruta.ends_with("escenaSegundoPiso.tscn"):
+			GameState.cables_reparados = false
+			var mono = get_tree().get_first_node_in_group("enemigo_cables")
+			if mono:
+				mono.global_position = Vector3(200, 200, 200)
+				mono.activo = false
 		get_tree().reload_current_scene())
 
 	var btn_salir = Button.new()
@@ -577,17 +600,34 @@ func mostrar_menu_pausa():
 		btn.size = Vector2(300, 60)
 		btn.position = Vector2(get_viewport().size.x / 2 - 150, dato[1])
 		menu.add_child(btn)
+
 		if dato[0] == "VOLVER":
 			btn.pressed.connect(func():
 				menu.queue_free()
 				get_tree().paused = false
-				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED))
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+			)
+
 		elif dato[0] == "REINICIAR":
 			btn.pressed.connect(func():
 				get_tree().paused = false
-				get_tree().reload_current_scene())
+
+				var ruta = get_tree().current_scene.scene_file_path
+
+				if ruta.ends_with("escenaSegundoPiso.tscn"):
+					GameState.cables_reparados = false
+
+					var mono = get_tree().current_scene.get_node_or_null("monoSusto")
+					if mono:
+						mono.visible = false
+
+				get_tree().reload_current_scene()
+			)
+
 		else:
-			btn.pressed.connect(func(): get_tree().quit())
+			btn.pressed.connect(func():
+				get_tree().quit()
+			)
 
 func mostrar_mensaje_escalera(mostrar: bool):
 	if mostrar:

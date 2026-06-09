@@ -9,6 +9,8 @@ func _ready():
 		rotation.y += deg_to_rad(90)
 
 func interactuar():
+	print("Estado GameState al intentar abrir: ", GameState.generadores_encendidos)
+	print("Cables: ", GameState.cables_reparados)
 	if abierta: return
 	var generadores_listos = GameState.generadores_encendidos.size()
 	
@@ -23,7 +25,7 @@ func interactuar():
 			jugador.mostrar_mensaje_temporal("Necesitas encender %d generador(es) más y reparar los cables" % (2 - generadores_listos))
 		elif not GameState.cables_reparados:
 			jugador.mostrar_mensaje_temporal("Necesitas reparar los cables del primer piso")
-		else:
+		elif generadores_listos < 2:
 			jugador.mostrar_mensaje_temporal("Necesitas encender %d generador(es) más" % (2 - generadores_listos))
 
 func _abrir():

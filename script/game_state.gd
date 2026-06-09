@@ -6,7 +6,7 @@ var galones_recogidos = {}    # {"Galon1": true, "Galon2": true}
 var generadores_encendidos = {}  # {"Generador1": true, ...}
 var puerta_generador_abierta = false
 var cables_reparados = false
-
+var mono_susto_hecho := false
 func marcar_llave():
 	llave_recogida = true
 

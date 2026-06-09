@@ -5,6 +5,7 @@ extends CharacterBody3D
 @export var rango_vision: float = 14.0
 @export var angulo_vision: float = 85.0
 @export var rango_ataque: float = 2.2
+@onready var area_ataque = get_node_or_null("AreaAtaque")
 
 var pos_generador1: Vector3 = Vector3(15.22, 1.02, -22.11)
 var pos_generador2: Vector3 = Vector3(16.47, 1.02, -30.48)
@@ -140,6 +141,19 @@ func _ready():
 	_reproducir("Model|Idle")
 	await get_tree().create_timer(randf_range(1.0, 3.0)).timeout
 	estado = Estado.PATRULLANDO
+	if area_ataque:
+		area_ataque.body_entered.connect(_on_jugador_en_rango)
+
+func _on_jugador_en_rango(body):
+	if not body.is_in_group("jugador"):
+		return
+	if not puede_atacar:
+		return
+	if estado == Estado.ATACANDO:
+		return
+	if fase == 0:
+		return
+	_atacar()
 
 func _physics_process(delta):
 	var distancia_ruta = ruta_actual[_punto_mas_cercano(ruta_actual)].distance_to(global_position)
@@ -196,12 +210,12 @@ func _physics_process(delta):
 
 	_actualizar_audio()
 	if Engine.get_process_frames() % 60 == 0:
-		print("Estado:", estado, " Vel:", Vector2(velocity.x, velocity.z).length())
+		pass
 	move_and_slide()
 # ─── FASES ─────────────────────────────────────────────────────────────────
 
 func _actualizar_fase():
-	if tiempo_juego < 60.0 and not objetivo_completado:
+	if tiempo_juego < 10.0 and not objetivo_completado:
 		fase = 0
 	else:
 		fase = 1
@@ -689,8 +703,8 @@ func _atacar():
 
 	# Regresar a ruta y huir
 	indice_ruta = _punto_mas_cercano(ruta_actual)
-	_entrar_huyendo()
-	await get_tree().create_timer(5.0).timeout
+	estado = Estado.PERSIGUIENDO  # sigue persiguiendo en vez de huir
+	await get_tree().create_timer(2.0).timeout  # ← 2 segundos entre golpes
 	if not is_inside_tree(): return
 	puede_atacar = true
 

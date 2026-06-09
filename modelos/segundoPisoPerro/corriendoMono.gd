@@ -9,6 +9,11 @@ var anim: AnimationPlayer
 func _ready():
 	anim = _buscar_anim(self)
 
+	if GameState.mono_susto_hecho:
+		global_position = Vector3(200, 200, 200)
+		visible = false
+		set_process(false)
+
 func _process(delta):
 	if not moviendose:
 		return
@@ -27,7 +32,7 @@ func _process(delta):
 func activar():
 	if moviendose:
 		return
-
+	GameState.mono_susto_hecho = true
 	moviendose = true
 
 	if anim:

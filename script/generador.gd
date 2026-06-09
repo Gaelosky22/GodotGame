@@ -13,6 +13,8 @@ var cargando = false
 
 func _ready():
 	add_to_group("generadores")
+	print("Generador '", name, "' iniciando. GameState dice encendido: ", GameState.generador_fue_encendido(name))
+	print("GameState completo: ", GameState.generadores_encendidos)
 	if GameState.generador_fue_encendido(name):
 		tiene_gasolina = true
 		encendido = true
@@ -28,26 +30,25 @@ func recibir_objeto(objeto) -> bool:
 		return false
 	if not objeto.nombre_display.to_lower().contains("gal"):
 		return false
-
-	# Iniciar carga
 	cargando = true
-	GameState.marcar_galon(objeto.name)  # ← agrega esto
-
+	GameState.marcar_galon(objeto.name)
+	GameState.marcar_generador(name)  # ← marcar ANTES del await
 	objeto.queue_free()
-
 	if audio_echar_gas:
 		audio_echar_gas.play()
-
 	_mostrar_mensaje("Cargando gasolina...")
 	await get_tree().create_timer(6.0).timeout
 	if not is_inside_tree(): return true
-
 	if audio_echar_gas and audio_echar_gas.playing:
 		audio_echar_gas.stop()
-
 	_encender()
 	return true
+	
 func _encender():
+	print("Guardando generador: '", name, "'")
+	print("GameState antes: ", GameState.generadores_encendidos)
+	GameState.marcar_generador(name)
+	print("GameState despues: ", GameState.generadores_encendidos)
 	tiene_gasolina = true
 	encendido = true
 	cargando = false

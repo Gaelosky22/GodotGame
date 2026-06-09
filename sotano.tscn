@@ -137,7 +137,10 @@ normal_texture = ExtResource("2_stwdm")
 size = Vector3(34.489883, 1, 79.74544)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fu8n0"]
-size = Vector3(1.5755615, 2.2052002, 1)
+size = Vector3(1.0411072, 2.2052002, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jsx8y"]
+size = Vector3(2.586975, 3.1660156, 2.5196533)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_diqh4"]
 size = Vector3(3.2649536, 5.335205, 2.495285)
@@ -694,7 +697,7 @@ transform = Transform3D(-0.13740988, -1.6289644e-09, -0.9905143, -0.027466677, 0
 script = ExtResource("19_fu8n0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/enemigo" unique_id=1467584897]
-transform = Transform3D(0.99999994, 0, 1.4901161e-08, 0, 0.99999994, -2.3283064e-10, 1.4901161e-08, -2.3283064e-10, 1, -0.35486412, 1.4575973, -0.39507437)
+transform = Transform3D(0.99999887, -5.5879354e-09, 1.1920929e-07, 1.1175871e-08, 0.99999887, -4.4237822e-09, 1.6391277e-07, -2.3283064e-09, 1, -0.21077538, 1.4575968, -0.39507532)
 shape = SubResource("BoxShape3D_fu8n0")
 
 [node name="Sketchfab_Scene" parent="NavigationRegion3D/enemigo" unique_id=768025768 instance=ExtResource("18_ixt30")]
@@ -718,6 +721,12 @@ stream = ExtResource("14_uf16k")
 
 [node name="AudioMonstruo" type="AudioStreamPlayer3D" parent="NavigationRegion3D/enemigo" unique_id=168209883]
 stream = ExtResource("15_s2qu8")
+
+[node name="AreaAtaque" type="Area3D" parent="NavigationRegion3D/enemigo" unique_id=1419158621]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/enemigo/AreaAtaque" unique_id=1060900091]
+transform = Transform3D(0.9999986, 9.49949e-08, 1.1920929e-07, 1.4901161e-08, 0.9999971, -1.9092113e-08, 2.0861626e-07, -1.8626451e-08, 1, -0.28066635, 1.0830064, -0.23431492)
+shape = SubResource("BoxShape3D_jsx8y")
 
 [node name="punto1" type="Marker3D" parent="NavigationRegion3D" unique_id=255317802]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.937425, 0, -32.62602)
