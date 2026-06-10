@@ -3,9 +3,12 @@ extends CharacterBody3D
 var golpes = 0
 var golpes_maximos = 3
 var muerto = false
+var label_piso: Label
+var video_player_muerte: VideoStreamPlayer
+var audio_player_muerte: AudioStreamPlayer
 
-var velocidad = 4.8
-var velocidad_con_carga = 2.8
+var velocidad = 10
+var velocidad_con_carga = 5
 var gravedad = 9.8
 var sensibilidad_mouse = 0.002
 
@@ -44,16 +47,26 @@ var hud: CanvasLayer
 # Precargar cinematica al inicio
 var cinematica_muerte = load("res://cinematic/jumpscare-perron2.ogv")
 var audio_muerte = load("res://sonidos/jumpscare dos.mp3")
+var cinematica_muerte_piso2 = load("res://cinematic/JumpScarepiso2.ogv")
+var audio_muerte_piso2 = load("res://sonidosOrganizados/monstruoPiso2/jumpscare2.mp3")
 
 @onready var camara = $Camera3D
 @onready var linterna = $Camera3D/SpotLight3D
 
 func _ready():
 	add_to_group("jugador")
+		# Si hay un punto de spawn guardado, teletransportarse allí
+	if PlayerSpawn.spawn_position != Vector3.ZERO:
+		global_position = PlayerSpawn.spawn_position
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	crear_hud()
-	# Audio de inicio después de 15s
+	_actualizar_label_piso()  # ← Añadir esto
 	_reproducir_audio_inicio()
+		# Precargar reproductores de cinemática de muerte
+	video_player_muerte = VideoStreamPlayer.new()
+	video_player_muerte.expand = true
+	video_player_muerte.set_anchors_preset(Control.PRESET_FULL_RECT)
+	audio_player_muerte = AudioStreamPlayer.new()
 
 func _reproducir_audio_inicio():
 	await get_tree().create_timer(15.0).timeout
@@ -111,7 +124,24 @@ func crear_hud():
 	overlay_dano.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay_dano.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hud.add_child(overlay_dano)
+	label_piso = Label.new()
+	label_piso.name = "LabelPiso"
+	label_piso.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	label_piso.add_theme_font_size_override("font_size", 16)
+	label_piso.add_theme_color_override("font_color", Color(1, 1, 1, 0.7))
+	label_piso.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	label_piso.position = Vector2(-20, 50)
+	hud.add_child(label_piso)
+	_actualizar_label_piso()
 var mostrando_mensaje = false
+func _actualizar_label_piso():
+	var ruta = get_tree().current_scene.scene_file_path
+	if ruta.ends_with("sotano.tscn"):
+		label_piso.text = "Sótano - Piso 1"
+	elif ruta.ends_with("escenaSegundoPiso.tscn"):
+		label_piso.text = "Segundo Piso"
+	else:
+		label_piso.text = "Desconocido"
 
 func actualizar_hud():
 	var barra = hud.get_node("BarraStamina")
@@ -457,6 +487,18 @@ func _reproducir_cinematica_muerte():
 	var fondo_nodo = get_tree().current_scene.get_node_or_null("sonidoFondo")
 	if fondo_nodo: fondo_nodo.stop()
 
+	# Detectar piso actual
+	var ruta = get_tree().current_scene.scene_file_path
+	var video_stream
+	var audio_stream
+	
+	if ruta.ends_with("escenaSegundoPiso.tscn"):
+		video_stream = cinematica_muerte_piso2
+		audio_stream = audio_muerte_piso2
+	else:
+		video_stream = cinematica_muerte
+		audio_stream = audio_muerte
+
 	var capa = CanvasLayer.new()
 	capa.layer = 10
 	add_child(capa)
@@ -466,41 +508,48 @@ func _reproducir_cinematica_muerte():
 	fondo.set_anchors_preset(Control.PRESET_FULL_RECT)
 	capa.add_child(fondo)
 
-	if cinematica_muerte == null:
+	if video_stream == null:
 		mostrar_menu_muerte()
 		return
 
-	var video = VideoStreamPlayer.new()
-	video.stream = cinematica_muerte
-	video.expand = true
-	video.set_anchors_preset(Control.PRESET_FULL_RECT)
-	capa.add_child(video)
+	# Usar reproductores precargados
+	video_player_muerte.stream = video_stream
+	audio_player_muerte.stream = audio_stream
+	
+	# Quitar de su padre anterior si lo tiene
+	if video_player_muerte.get_parent():
+		video_player_muerte.get_parent().remove_child(video_player_muerte)
+	if audio_player_muerte.get_parent():
+		audio_player_muerte.get_parent().remove_child(audio_player_muerte)
+	
+	capa.add_child(video_player_muerte)
+	capa.add_child(audio_player_muerte)
 
-	var audio = AudioStreamPlayer.new()
-	audio.stream = audio_muerte
-	capa.add_child(audio)
+	video_player_muerte.play()
+	audio_player_muerte.play()
 
-	video.play()
-	audio.play()
-
-	# Temporizador de seguridad: si el audio no se termina en 5 segundos, forzamos el menú
+	# Temporizador de seguridad
 	var tiempo_limite = 5.0
 	var timer = get_tree().create_timer(tiempo_limite)
 	var audio_terminado = false
 
-	# Conectar la señal finished del audio para saber cuándo acaba de verdad
-	if audio.stream:
+	if audio_player_muerte.stream:
 		@warning_ignore("confusable_capture_reassignment")
-		audio.finished.connect(func(): audio_terminado = true)
+		audio_player_muerte.finished.connect(func(): audio_terminado = true)
 
-# Esperar a que el audio termine o a que pase el tiempo límite
 	while not audio_terminado and timer.time_left > 0:
 		await get_tree().process_frame
 
-	# Limpiar
 	if not is_inside_tree(): return
-	video.stop()
-	if audio.playing: audio.stop()
+	video_player_muerte.stop()
+	if audio_player_muerte.playing: audio_player_muerte.stop()
+	
+	# Quitar reproductores de la capa (se reutilizarán)
+	if video_player_muerte.get_parent():
+		video_player_muerte.get_parent().remove_child(video_player_muerte)
+	if audio_player_muerte.get_parent():
+		audio_player_muerte.get_parent().remove_child(audio_player_muerte)
+	
 	capa.queue_free()
 	await get_tree().process_frame
 	mostrar_menu_muerte()
@@ -545,17 +594,7 @@ func mostrar_menu_muerte():
 	btn_reiniciar.position = Vector2(get_viewport().size.x / 2 - 150, 330)
 	btn_reiniciar.process_mode = Node.PROCESS_MODE_ALWAYS
 	menu.add_child(btn_reiniciar)
-	btn_reiniciar.pressed.connect(func():
-		get_tree().paused = false
-		# Si estamos en el segundo piso, resetear cables y mover enemigo
-		var ruta = get_tree().current_scene.scene_file_path
-		if ruta.ends_with("escenaSegundoPiso.tscn"):
-			GameState.cables_reparados = false
-			var mono = get_tree().get_first_node_in_group("enemigo_cables")
-			if mono:
-				mono.global_position = Vector3(200, 200, 200)
-				mono.activo = false
-		get_tree().reload_current_scene())
+	btn_reiniciar.pressed.connect(_reiniciar_juego)
 
 	var btn_salir = Button.new()
 	btn_salir.text = "SALIR"
@@ -564,6 +603,24 @@ func mostrar_menu_muerte():
 	btn_salir.process_mode = Node.PROCESS_MODE_ALWAYS
 	menu.add_child(btn_salir)
 	btn_salir.pressed.connect(func(): get_tree().quit())
+
+func _reiniciar_juego():
+	get_tree().paused = false
+	
+	# Resetear GameState (progreso principal)
+	GameState.reset()
+	
+	# Resetear estado del segundo piso
+	GameState.cables_reparados = false
+	var mono = get_tree().get_first_node_in_group("enemigo_cables")
+	if mono:
+		mono.global_position = Vector3(200, 200, 200)
+		mono.activo = false
+	
+	# Punto de inicio real del sótano
+	PlayerSpawn.set_spawn(Vector3(-7.2, 3, 0.5349))
+	
+	get_tree().change_scene_to_file("res://sotano.tscn")
 
 func mostrar_menu_pausa():
 	if has_node("MenuPausa"):
@@ -609,20 +666,7 @@ func mostrar_menu_pausa():
 			)
 
 		elif dato[0] == "REINICIAR":
-			btn.pressed.connect(func():
-				get_tree().paused = false
-
-				var ruta = get_tree().current_scene.scene_file_path
-
-				if ruta.ends_with("escenaSegundoPiso.tscn"):
-					GameState.cables_reparados = false
-
-					var mono = get_tree().current_scene.get_node_or_null("monoSusto")
-					if mono:
-						mono.visible = false
-
-				get_tree().reload_current_scene()
-			)
+			btn.pressed.connect(_reiniciar_juego)
 
 		else:
 			btn.pressed.connect(func():

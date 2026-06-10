@@ -387,14 +387,14 @@ material = SubResource("StandardMaterial3D_ny25s")
 [node name="mapaNuevo" parent="." unique_id=974300123 instance=ExtResource("8_vww2q")]
 transform = Transform3D(2.7, 0, 0, 0, 2.526, 0, 0, 0, 2.733, 111.05191, -6.948946, -13.742158)
 
-[node name="door5_SM" parent="mapaNuevo/Sketchfab_model/Hospital_02_low_FBX/RootNode" parent_id_path=PackedInt32Array(974300123, 281541867) index="1" unique_id=1659808183]
+[node name="door5_SM" parent="mapaNuevo/Sketchfab_model/Hospital_02_low_FBX/RootNode" parent_id_path=PackedInt32Array(974300123, 1492262960) index="1" unique_id=2146464795]
 transform = Transform3D(1.6292062e-09, 0.009999997, -1.6653341e-18, -5.55112e-19, 2.2204454e-18, 0.009999998, 0.009999996, -1.6292059e-09, 1.110222e-18, -37.209988, 13.496779, 5.6599975)
 visible = false
 
-[node name="door0_SM001" parent="mapaNuevo/Sketchfab_model/Hospital_02_low_FBX/RootNode" parent_id_path=PackedInt32Array(974300123, 281541867) index="3" unique_id=478889970]
+[node name="door0_SM001" parent="mapaNuevo/Sketchfab_model/Hospital_02_low_FBX/RootNode" parent_id_path=PackedInt32Array(974300123, 1492262960) index="3" unique_id=1736055214]
 transform = Transform3D(0.009999985, 0, 0, 0, -4.3711368e-10, 0.009999998, 0, -0.009999981, -4.3711312e-10, 13.255196, 6.4570875, -6.2993064)
 
-[node name="door0_SM002" parent="mapaNuevo/Sketchfab_model/Hospital_02_low_FBX/RootNode" parent_id_path=PackedInt32Array(974300123, 281541867) index="4" unique_id=67075073]
+[node name="door0_SM002" parent="mapaNuevo/Sketchfab_model/Hospital_02_low_FBX/RootNode" parent_id_path=PackedInt32Array(974300123, 1492262960) index="4" unique_id=1233354520]
 transform = Transform3D(0.0099999895, 0, 0, 0, -4.3711368e-10, 0.009999998, 0, -0.009999989, -4.3711354e-10, 14.392269, 6.4570875, -6.2941604)
 
 [node name="Pared22" type="CSGBox3D" parent="." unique_id=1653749583]
@@ -592,7 +592,7 @@ environment = SubResource("Environment_ny25s")
 transform = Transform3D(-2.9995432, 0, -0.052357376, 0, 3, 0, 0.052357376, 0, -2.9995432, 111.84076, 9.555256, 10.199275)
 script = ExtResource("18_rktj5")
 
-[node name="Skeleton3D" parent="monoSusto/Sketchfab_model/1d4c2d9f1a694e28b7e8e6a0ac3f8ebf_fbx/Object_2/RootNode/thc4_arma/Object_5" parent_id_path=PackedInt32Array(1309376838, 773048337) index="0" unique_id=557184521]
+[node name="Skeleton3D" parent="monoSusto/Sketchfab_model/1d4c2d9f1a694e28b7e8e6a0ac3f8ebf_fbx/Object_2/RootNode/thc4_arma/Object_5" parent_id_path=PackedInt32Array(1309376838, 1530332709) index="0" unique_id=1969290954]
 bones/2/position = Vector3(0.0003022898, 1.0810578, -0.068674326)
 bones/2/rotation = Quaternion(0.29880652, 5.230384e-05, 0.00073136756, 0.9543135)
 bones/3/rotation = Quaternion(-8.0964775e-05, 0.99977785, 0.021008382, 0.0016800556)
@@ -656,7 +656,7 @@ shape = SubResource("BoxShape3D_vi6fs")
 transform = Transform3D(-3.1995695, 0, 0.052497517, 0, 3.2, 0, -0.052497517, 0, -3.1995695, 141, 26.55487, -42.359)
 script = ExtResource("22_jibsi")
 
-[node name="Skeleton3D" parent="enemigoSegundoPiso/Sketchfab_model/1d4c2d9f1a694e28b7e8e6a0ac3f8ebf_fbx/Object_2/RootNode/thc4_arma/Object_5" parent_id_path=PackedInt32Array(326931076, 773048337) index="0" unique_id=557184521]
+[node name="Skeleton3D" parent="enemigoSegundoPiso/Sketchfab_model/1d4c2d9f1a694e28b7e8e6a0ac3f8ebf_fbx/Object_2/RootNode/thc4_arma/Object_5" parent_id_path=PackedInt32Array(326931076, 1530332709) index="0" unique_id=1969290954]
 bones/2/rotation = Quaternion(0.31484008, 3.9976192e-05, 0.0007321451, 0.9491445)
 bones/4/rotation = Quaternion(-0.27786052, 0.0057768384, -0.0011464016, 0.9606034)
 bones/5/rotation = Quaternion(-0.082001895, -8.27645e-05, 4.2887226e-05, 0.9966322)

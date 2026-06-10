@@ -47,4 +47,4 @@ func _abrir():
 	var tween = create_tween()
 	tween.tween_property(fade, "color", Color(0, 0, 0, 1), 0.8)
 	await tween.finished
-	get_tree().change_scene_to_file("res://escenaBosque.tscn")
+	get_tree().change_scene_to_file("res://creditos/creditos.tscn")

@@ -51,7 +51,6 @@
 [ext_resource type="Script" uid="uid://w8e1ukyn75lt" path="res://script/escenaTeletransporte2a1.gd" id="46_nj2oe"]
 [ext_resource type="Script" uid="uid://dowjsfknmf5fk" path="res://script/viejita.gd" id="46_of4ec"]
 [ext_resource type="AudioStream" uid="uid://dh2d6414em5q" path="res://sonidosOrganizados/AudiosViejita/jumpscareVejita.mp3" id="46_x30h8"]
-[ext_resource type="Script" uid="uid://dxnafv2f5j4n0" path="res://areaViejita.gd" id="49_wqkm6"]
 [ext_resource type="PackedScene" uid="uid://cfif3o10koe01" path="res://decoracionesFinal/old_wooden_crucifix.glb" id="53_p5auf"]
 [ext_resource type="PackedScene" uid="uid://blb3yd4v7ugro" path="res://decoracionesFinal/dusty_old_bookshelf_free.glb" id="54_ijsui"]
 [ext_resource type="PackedScene" uid="uid://fgy6kxwwnq3q" path="res://decoracionesFinal/writing_desk.glb" id="55_jvgy7"]
@@ -146,7 +145,7 @@ size = Vector3(2.586975, 3.1660156, 2.5196533)
 size = Vector3(3.2649536, 5.335205, 2.495285)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2dbqe"]
-size = Vector3(2.4016113, 4.6622314, 1)
+size = Vector3(2.3623924, 4.537369, 1.7891388)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gsmyu"]
 size = Vector3(2.294464, 3.4848022, 1.1308594)
@@ -183,9 +182,6 @@ size = Vector3(1.5302429, 4.5825195, 4.8253736)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wqkm6"]
 size = Vector3(6.555725, 8.600586, 6.7094727)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_nj2oe"]
-size = Vector3(1, 1.861206, 1.2636719)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3ngj6"]
 size = Vector3(0.8659973, 2.5673828, 0.36706543)
@@ -477,7 +473,7 @@ size = Vector3(14.63916, 11, 1)
 material = SubResource("StandardMaterial3D_kh4y0")
 
 [node name="Pared3" type="CSGBox3D" parent="NavigationRegion3D" unique_id=1729315765]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.0000005, -0.23217773)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.995923, 1.9859025, -0.2255888)
 use_collision = true
 size = Vector3(1, 11, 20.464355)
 material = SubResource("StandardMaterial3D_kh4y0")
@@ -703,7 +699,7 @@ shape = SubResource("BoxShape3D_fu8n0")
 [node name="Sketchfab_Scene" parent="NavigationRegion3D/enemigo" unique_id=768025768 instance=ExtResource("18_ixt30")]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 1.8008137, 0, 0)
 
-[node name="Sketchfab_model" parent="NavigationRegion3D/enemigo/Sketchfab_Scene" index="0" unique_id=1666931723]
+[node name="Sketchfab_model" parent="NavigationRegion3D/enemigo/Sketchfab_Scene" index="0" unique_id=2046319812]
 transform = Transform3D(-0.9982397, 0.059306454, 2.5923677e-09, 0, -4.3711385e-08, 0.99999994, 0.059306454, 0.9982397, 4.3634447e-08, -6.512111, 0, 0)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="NavigationRegion3D/enemigo" unique_id=1884199118]
@@ -754,7 +750,7 @@ shape = SubResource("BoxShape3D_diqh4")
 [node name="StaticBody3D" type="StaticBody3D" parent="armario/Sketchfab_Scene" unique_id=730514078]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="armario/Sketchfab_Scene/StaticBody3D" unique_id=1330080302]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0057371557, 1.8311157, 3.5762787e-07)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1223582, 1.8311157, 0.12992263)
 shape = SubResource("BoxShape3D_2dbqe")
 
 [node name="armario2" type="Node3D" parent="." unique_id=1045431273]
@@ -778,7 +774,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0057371557, 1.8311157, 3.5
 shape = SubResource("BoxShape3D_2dbqe")
 
 [node name="armario3" type="Node3D" parent="." unique_id=502822486]
-transform = Transform3D(-0.02966611, 0, -0.9995598, 0, 1, 0, 0.9995598, 0, -0.02966611, 5.3740478, 0, 23.068424)
+transform = Transform3D(-0.02966611, 0, -0.9995598, 0, 1, 0, 0.9995598, 0, -0.02966611, 5.3740478, 0, 20.152843)
 
 [node name="Sketchfab_Scene" parent="armario3" unique_id=1345004323 instance=ExtResource("32_gsmyu")]
 script = ExtResource("33_14hn0")
@@ -817,7 +813,11 @@ transform = Transform3D(1, -2.9802322e-08, -8.440111e-09, 0, 1, 4.656613e-10, -7
 [node name="StaticBody3D" type="StaticBody3D" parent="armario6/Sketchfab_Scene" unique_id=828691414]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="armario6/Sketchfab_Scene/StaticBody3D" unique_id=1296397085]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0057371557, 1.8311157, 3.5762787e-07)
+transform = Transform3D(1, -2.9802322e-07, 2.7765054e-08, 0, 1.000002, -8.5961074e-07, 6.8102963e-09, 7.916242e-09, 1.0000013, 0.2554853, 2.2453403, 0.31895447)
+shape = SubResource("BoxShape3D_2dbqe")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="armario6/Sketchfab_Scene/StaticBody3D/CollisionShape3D" unique_id=2131414500]
+transform = Transform3D(1.0000008, -4.4703484e-07, 9.522773e-08, -8.791685e-07, 1.0000081, -2.3050234e-07, -3.981404e-07, 9.313226e-10, 1.0000013, 2.7883837, 1.3721199, -2.2329915)
 shape = SubResource("BoxShape3D_2dbqe")
 
 [node name="armario4" type="Node3D" parent="." unique_id=1123343969]
@@ -1329,10 +1329,10 @@ shape = SubResource("BoxShape3D_0q5cl")
 [node name="habitacionGalon2" parent="." unique_id=2123114156 instance=ExtResource("43_0q5cl")]
 transform = Transform3D(-1.1379901e-09, 0, 0.03184112, 0, 0.035914607, 0, -0.026034178, 0, -1.3918197e-09, -0.2492342, -0.62000704, 14.233948)
 
-[node name="scene kitchen sketchfab test 1_obj_cleaner_gles" parent="habitacionGalon2/Sketchfab_model" parent_id_path=PackedInt32Array(2123114156, 1866470395) index="0" unique_id=951515189]
+[node name="scene kitchen sketchfab test 1_obj_cleaner_gles" parent="habitacionGalon2/Sketchfab_model" parent_id_path=PackedInt32Array(2123114156, 1018310274) index="0" unique_id=760438201]
 transform = Transform3D(0.9576719, 0, 0, 0, 1.0009097, 9.305782e-24, 0, -2.8951321e-24, 1, -374.34882, -129.97778, 0)
 
-[node name="Object_12" parent="habitacionGalon2/Sketchfab_model/scene kitchen sketchfab test 1_obj_cleaner_gles/Object_2" parent_id_path=PackedInt32Array(2123114156, 309173331) index="9" unique_id=730709022]
+[node name="Object_12" parent="habitacionGalon2/Sketchfab_model/scene kitchen sketchfab test 1_obj_cleaner_gles/Object_2" parent_id_path=PackedInt32Array(2123114156, 612342970) index="9" unique_id=453538185]
 transform = Transform3D(1, 0, 0, 3.7252903e-09, 1, 6.5140473e-24, -6.617445e-24, -2.8951321e-24, 1.0000002, 0, 0, 454.57236)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="habitacionGalon2" unique_id=1013710205]
@@ -1383,58 +1383,6 @@ script = ExtResource("46_nj2oe")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="escaleraMano/MeshInstance3D/Area3D" unique_id=1660672712]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7778625, 3.800293, 0.45874786)
 shape = SubResource("BoxShape3D_wqkm6")
-
-[node name="viejita" parent="." unique_id=1392940706 instance=ExtResource("45_0ox2j")]
-transform = Transform3D(0.017594391, 0, 1.699909, 0, 1.7, 0, -1.699909, 0, 0.017594391, -14.368614, -0.25659108, -33.841675)
-script = ExtResource("46_of4ec")
-
-[node name="Skeleton3D" parent="viejita/Sketchfab_model/root/GLTF_SceneRootNode/Armature_25/GLTF_created_0" parent_id_path=PackedInt32Array(1392940706, 232775457) index="0" unique_id=1024227144]
-bones/1/position = Vector3(3.158702, 87.911934, 10.863287)
-bones/1/rotation = Quaternion(0.3822314, -0.18568324, -0.118307024, 0.89745444)
-bones/2/rotation = Quaternion(0.67722255, 0.1012162, -0.08376163, 0.72395366)
-bones/3/rotation = Quaternion(0.120076016, -0.012461868, -0.0055692126, 0.9926709)
-bones/4/rotation = Quaternion(-0.007689126, -0.19805959, -0.41370776, 0.8885715)
-bones/5/rotation = Quaternion(-0.38087213, -0.29706615, -0.07093002, 0.87272966)
-bones/6/rotation = Quaternion(0.959186, 0.12501957, -0.16235776, 0.1948649)
-bones/7/rotation = Quaternion(0.62385124, 0.052010573, 0.023640554, 0.77945215)
-bones/8/rotation = Quaternion(0.018930199, 0.06427246, 0.0792403, 0.99460125)
-bones/9/rotation = Quaternion(-0.51947457, 0.1683682, 0.02674578, 0.837307)
-bones/10/rotation = Quaternion(0.06312841, 0.1791582, 0.018522047, 0.98161817)
-bones/11/rotation = Quaternion(0.054495588, 0.13721524, -0.053564604, 0.98758954)
-bones/12/position = Vector3(-9.783514e-07, 11.2307, 1.3551345e-06)
-bones/12/rotation = Quaternion(-0.09135134, -0.004706654, -0.004394274, 0.99579793)
-bones/13/position = Vector3(3.8771982, 3.0135007, -0.7777517)
-bones/13/rotation = Quaternion(0.47625598, 0.6194752, -0.45759815, 0.42430493)
-bones/14/position = Vector3(1.1042089e-05, 15.315902, -4.4254302e-06)
-bones/14/rotation = Quaternion(0.36547154, 0.81189185, 0.3159879, 0.32774052)
-bones/15/rotation = Quaternion(-0.32894093, -0.04075762, -0.0140922135, 0.9433654)
-bones/16/position = Vector3(-3.7895552e-07, 27.39652, -1.1517743e-05)
-bones/16/rotation = Quaternion(0.19295317, -0.0610857, 0.2674136, 0.9420869)
-bones/17/position = Vector3(-3.5928717, 3.2649589, -0.74584293)
-bones/17/rotation = Quaternion(-0.42962673, 0.6156764, -0.2908121, -0.5931204)
-bones/18/position = Vector3(7.376794e-06, 14.692905, 1.7126483e-06)
-bones/18/rotation = Quaternion(-0.282023, 0.15258905, 0.3992186, -0.8589553)
-bones/19/rotation = Quaternion(-0.8398936, 0.13230965, -0.09548462, 0.5176442)
-bones/20/position = Vector3(-5.312941e-06, 28.092123, 9.040795e-06)
-bones/20/rotation = Quaternion(0.059493884, -0.37530062, 0.06774876, 0.9225075)
-bones/21/rotation = Quaternion(-0.007152397, -0.014608613, 0.08701602, 0.99607414)
-bones/22/position = Vector3(-9.159603e-07, 6.817175, 1.2097397e-05)
-bones/22/rotation = Quaternion(0.16722561, -0.064317554, 0.00094022596, 0.98381805)
-
-[node name="AnimationPlayer" parent="viejita" index="1" unique_id=932160742]
-speed_scale = 1.5
-
-[node name="AudioJumpscare" type="AudioStreamPlayer3D" parent="viejita" unique_id=1110091254]
-stream = ExtResource("46_x30h8")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="viejita" unique_id=652251640]
-
-[node name="Area3D" type="Area3D" parent="viejita/MeshInstance3D" unique_id=2105236717]
-script = ExtResource("49_wqkm6")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="viejita/MeshInstance3D/Area3D" unique_id=1004658825]
-transform = Transform3D(0.9997528, 0, 0.022233661, 0, 0.9999965, 0, -0.022233661, 0, 0.9997528, -5.722046e-06, 0.43060273, 0.13183594)
-shape = SubResource("BoxShape3D_nj2oe")
 
 [node name="cruifijo" parent="." unique_id=1294092222 instance=ExtResource("53_p5auf")]
 transform = Transform3D(0.0008290376, 0, 0.0005591929, 0, 0.001, 0, -0.0005591929, 0, 0.0008290376, 13.062407, -0.06264025, -30.80402)
@@ -1526,6 +1474,13 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 19.19724, 6.8420687, -35.1631
 
 [node name="Sketchfab_Scene18" parent="." unique_id=568105689 instance=ExtResource("58_3ngj6")]
 transform = Transform3D(4, 0, 0, 0, -1.7484555e-07, 4, 0, -4, -1.7484555e-07, 27.126534, -0.3559351, 12.798517)
+
+[node name="viejita" parent="." unique_id=1392940706 instance=ExtResource("45_0ox2j")]
+transform = Transform3D(0.023927443, 0, 1.4998091, 0, 1.5, 0, -1.4998091, 0, 0.023927443, -13.310036, 0.019031763, -33.875267)
+script = ExtResource("46_of4ec")
+
+[node name="AudioJumpscare" type="AudioStreamPlayer3D" parent="viejita" unique_id=2080284960]
+stream = ExtResource("46_x30h8")
 
 [editable path="NavigationRegion3D/enemigo/Sketchfab_Scene"]
 [editable path="habitacionGalon2"]
