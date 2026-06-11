@@ -7,6 +7,8 @@ var generadores_encendidos = {}  # {"Generador1": true, ...}
 var puerta_generador_abierta = false
 var cables_reparados = false
 var mono_susto_hecho := false
+var viejita_activada = false
+
 func marcar_llave():
 	llave_recogida = true
 
@@ -38,3 +40,4 @@ func reset():
 	generadores_encendidos = {}
 	puerta_generador_abierta = false
 	cables_reparados = false
+	viejita_activada = false   # ← añadir esto

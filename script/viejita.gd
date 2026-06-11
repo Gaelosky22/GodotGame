@@ -7,11 +7,17 @@ extends Node3D
 var jugador: Node3D = null
 var activada: bool = false
 var persiguiendo: bool = false
+var colisiono: bool = false
 
 var anim: AnimationPlayer = null
 @onready var audio_jumpscare: AudioStreamPlayer3D = $AudioJumpscare
 
 func _ready():
+	# Si ya fue activada en esta partida, desaparecer inmediatamente
+	if GameState.viejita_activada:
+		queue_free()
+		return
+	
 	anim = _buscar_anim(self)
 	add_to_group("viejita")
 	var jugadores = get_tree().get_nodes_in_group("jugador")
@@ -49,6 +55,7 @@ func _activar():
 	if activada: return
 	activada = true
 	persiguiendo = true
+	GameState.viejita_activada = true
 	
 	_reproducir("Armature|RunFast|baselayer")
 	if audio_jumpscare:
@@ -61,15 +68,36 @@ func _perseguir(delta):
 	
 	var dir = jugador.global_position - global_position
 	dir.y = 0
-	if dir.length() > 0.2:
+	var dist = dir.length()
+	
+	if dist < 1.0 and not colisiono:
+		colisiono = true
+		# Soltar el audio para que siga sonando
+		_soltar_audio()
+		# Eliminar el resto del nodo
+		queue_free()
+		return
+	
+	if dist > 0.2:
 		dir = dir.normalized()
-		# Movimiento directo sin physics
 		global_position += dir * velocidad_correr * delta
 		_mirar_a(jugador.global_position)
+
+func _soltar_audio():
+	if audio_jumpscare == null: return
 	
-	if audio_jumpscare and not audio_jumpscare.playing and persiguiendo:
-		await get_tree().process_frame
-		queue_free()
+	# Quitar el audio de este nodo
+	if audio_jumpscare.get_parent():
+		audio_jumpscare.get_parent().remove_child(audio_jumpscare)
+	
+	# Añadirlo a la raíz de la escena para que no se destruya con la viejita
+	get_tree().current_scene.add_child(audio_jumpscare)
+	
+	# Conectar señal para auto-destruirse al terminar
+	audio_jumpscare.finished.connect(_on_audio_finished.bind(audio_jumpscare))
+
+func _on_audio_finished(audio: AudioStreamPlayer3D):
+	audio.queue_free()
 
 func _mirar_a(pos: Vector3):
 	var dir = pos - global_position
@@ -77,7 +105,6 @@ func _mirar_a(pos: Vector3):
 	if dir.length() > 0.1:
 		look_at(global_position + dir.normalized(), Vector3.UP)
 		rotation.y += PI
-
 
 func _reproducir(nombre: String):
 	if anim == null: return

@@ -6,9 +6,10 @@ var muerto = false
 var label_piso: Label
 var video_player_muerte: VideoStreamPlayer
 var audio_player_muerte: AudioStreamPlayer
+var refueling = false  
 
-var velocidad = 10
-var velocidad_con_carga = 5
+var velocidad = 4.8
+var velocidad_con_carga = 2.8
 var gravedad = 9.8
 var sensibilidad_mouse = 0.002
 
@@ -185,6 +186,11 @@ func actualizar_hud():
 		label_objeto_en_mano.visible = true
 	else:
 		label_objeto_en_mano.visible = false
+		
+	if refueling:
+		texto_interaccion.text = "Echando gasolina..."
+		texto_interaccion.visible = true
+		return
 
 # ─── INPUT ─────────────────────────────────────────────────────────────────
 var cerca_de_cableado = false
@@ -300,6 +306,7 @@ func _usar_escaleras():
 
 # R — recoger, soltar y depositar objetos
 func _interactuar_objeto():
+	if refueling: return
 	if objeto_en_mano != null:
 		# Intentar depositar primero
 		var depositado = await _intentar_depositar()
@@ -356,10 +363,13 @@ func _intentar_depositar() -> bool:
 	for nodo in nodos_cercanos:
 		var dist = global_position.distance_to(nodo.global_position)
 		if dist < 2.5 and nodo.has_method("recibir_objeto"):
+			refueling = true
 			var resultado = await nodo.recibir_objeto(objeto_en_mano)
+			refueling = false
 			if resultado:
 				objeto_en_mano = null
 				return true
+			return false
 	return false
 
 func registrar_objeto_cercano(obj):
@@ -384,7 +394,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravedad * delta
 
-	if bloqueado or movimiento_bloqueado:
+	if bloqueado or movimiento_bloqueado or refueling:
 		velocity.x = 0
 		velocity.z = 0
 		move_and_slide()
@@ -440,7 +450,7 @@ func _physics_process(delta):
 # ─── DAÑO / MUERTE ─────────────────────────────────────────────────────────
 
 func recibir_golpe():
-	if muerto: return
+	if muerto or escondido: return
 	golpes += 1
 	if overlay_dano != null:
 		overlay_dano.color = Color(1, 0, 0, 0.45)

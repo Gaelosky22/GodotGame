@@ -20,9 +20,9 @@ func _ready():
 	area.name = "AreaDeteccion"
 	add_child(area)
 	var shape = CollisionShape3D.new()
-	var esfera = SphereShape3D.new()
-	esfera.radius = 75.0
-	shape.shape = esfera
+	var forma = BoxShape3D.new()
+	forma.size = Vector3(50.0, 50.0, 50.0)   # ← cambia aquí si quieres otra medida
+	shape.shape = forma
 	area.add_child(shape)
 	area.body_entered.connect(_on_jugador_cerca)
 	area.body_exited.connect(_on_jugador_lejos)

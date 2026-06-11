@@ -84,6 +84,7 @@ var gravedad = ProjectSettings.get_setting("physics/3d/default_gravity")
 var jugador: Node3D = null
 var puede_atacar = true
 
+
 var ruta_actual: Array[Vector3] = []
 var indice_ruta: int = 0
 var usando_ruta_a: bool = true
@@ -686,6 +687,7 @@ func _huir():
 # ─── ATAQUE ────────────────────────────────────────────────────────────────
 
 func _atacar():
+	if _jugador_escondido(): return 
 	puede_atacar = false
 	estado = Estado.ATACANDO
 	ataque_directo = false
